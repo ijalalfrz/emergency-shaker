@@ -22,7 +22,7 @@ import com.afina.emergencyshaker.Service.SensorService;
 
 public class MainActivity extends AppCompatActivity {
 
-    Intent mServiceIntent;
+    private Intent mServiceIntent;
     private SensorService mSensorService;
     Context ctx;
     public static MainActivity instance;
@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         mSensorService = new SensorService(getApplicationContext());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
-        if (!isMyServiceRunning(mSensorService.getClass())) {
-            startService(mServiceIntent);
-        }
 
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},1);
@@ -60,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
+
 
         s = (Switch)findViewById(R.id.switchID);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -70,11 +65,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     sw = true;
-                    mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-                    shakeInit();
+                    if (!isMyServiceRunning(mSensorService.getClass())) {
+                        startService(mServiceIntent);
+                    }
+
                 }else{
                     sw = false;
-                    mSensorManager.unregisterListener(mShakeDetector);
                 }
             }
         });
@@ -107,37 +103,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopService(mServiceIntent);
-
         Log.i("MAINACT", "onDestroy!");
 
         if(sw == true){
             s.setChecked(true);
         }else if(sw == false){
             s.setChecked(false);
-            mSensorManager.unregisterListener(mShakeDetector);
         }
 
         super.onDestroy();
 
     }
 
-    // The following are used for the shake detection
-    private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private ShakeDetector mShakeDetector;
 
-
-
-    protected void shakeInit() {
-
-        // ShakeDetector initialization
-//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-//        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        mShakeDetector = new ShakeDetector();
-
-
-        mShakeDetector.setOnShakeListener(new ShakeListener(ctx));
-    }
 
 
     @Override
@@ -149,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             s.setChecked(true);
         }else if(sw == false){
             s.setChecked(false);
-            mSensorManager.unregisterListener(mShakeDetector);
         }
 
     }
@@ -162,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             s.setChecked(true);
         }else if(sw == false){
             s.setChecked(false);
-            mSensorManager.unregisterListener(mShakeDetector);
         }
 
     }
@@ -177,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             s.setChecked(true);
         }else if(sw == false){
             s.setChecked(false);
-            mSensorManager.unregisterListener(mShakeDetector);
         }
 
     }

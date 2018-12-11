@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afina.emergencyshaker">
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -17,17 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".Service.SensorService"
-            android:enabled="true">
-        </service>
+            android:enabled="true"></service>
 
         <receiver
             android:name=".Broadcaster.SensorRestarterBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped">
-        </receiver>
+            android:label="RestartServiceWhenStopped"></receiver>
+
+        <activity android:name=".UIActivity.ConfirmationActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

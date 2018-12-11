@@ -42,7 +42,8 @@ public class SensorService extends Service {
         mShakeDetector = new ShakeDetector();
 
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-        mShakeDetector.setOnShakeListener(new ShakeListener(this));
+        ShakeListener shakeListener = new ShakeListener(this);
+        mShakeDetector.setOnShakeListener(shakeListener);
 
         startTimer();
         return START_STICKY;
