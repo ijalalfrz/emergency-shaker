@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import com.afina.emergencyshaker.Listeners.ShakeListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ctx = this;
         setContentView(R.layout.activity_main);
-        mSensorService = new SensorService(getCtx());
+        mSensorService = new SensorService(getApplicationContext());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
         if (!isMyServiceRunning(mSensorService.getClass())) {
             startService(mServiceIntent);
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopService(mServiceIntent);
+
         Log.i("MAINACT", "onDestroy!");
 
         if(sw == true){
@@ -113,29 +117,8 @@ public class MainActivity extends AppCompatActivity {
 //        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 //        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
-            @Override
-            public void onShake(int count) {
-                /*
-                 * The following method, "handleShakeEvent(count):" is a stub //
-                 * method you would use to setup whatever you want done once the
-                 * device has been shook.
-                 */
-
-//                Toast toast = Toast.makeText(getApplicationContext(), "Shake", Toast.LENGTH_SHORT);
-//                toast.show();
-
-                String phoneNumber = "085703830280";
-                Intent dialPhoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phoneNumber));
-                startActivity(dialPhoneIntent);
-
-
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(intent);
-
-            }
-        });
+        mShakeDetector.setOnShakeListener(new ShakeListener(ctx));
     }
 
 

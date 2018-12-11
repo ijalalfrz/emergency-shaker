@@ -3,19 +3,29 @@ package com.afina.emergencyshaker;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.afina.emergencyshaker.Listeners.ShakeListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SensorService extends Service {
-    MainActivity activity = MainActivity.instance;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
+    MainActivity activity = MainActivity.instance;
+    public Context ctx;
     public int counter=0;
     public SensorService(Context applicationContext) {
         super();
+        ctx = applicationContext;
         Log.i("HERE", "here I am!");
     }
 
@@ -25,17 +35,26 @@ public class SensorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mShakeDetector.setOnShakeListener(new ShakeListener(this));
+
         startTimer();
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         Log.i("EXIT", "ondestroy!");
+        mSensorManager.unregisterListener(mShakeDetector);
+
         Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);
         sendBroadcast(broadcastIntent);
         stoptimertask();
+        super.onDestroy();
 
 
     }

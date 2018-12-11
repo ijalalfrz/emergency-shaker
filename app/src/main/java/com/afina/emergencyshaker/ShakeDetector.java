@@ -61,4 +61,6 @@ public class ShakeDetector implements SensorEventListener {
             }
         }
     }
+
+
 }
