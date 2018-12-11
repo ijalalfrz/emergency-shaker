@@ -17,7 +17,7 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
     public void onShake(int count) {
 
         String phoneNumber = "085703830280";
-        Intent dialPhoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phoneNumber));
+        Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phoneNumber));
         dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ctx.startActivity(dialPhoneIntent);
     }
