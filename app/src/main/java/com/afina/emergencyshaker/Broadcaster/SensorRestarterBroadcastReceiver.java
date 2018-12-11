@@ -1,9 +1,11 @@
-package com.afina.emergencyshaker;
+package com.afina.emergencyshaker.Broadcaster;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.afina.emergencyshaker.Service.SensorService;
 
 public class SensorRestarterBroadcastReceiver extends BroadcastReceiver {
     @Override

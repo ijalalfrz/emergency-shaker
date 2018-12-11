@@ -1,39 +1,36 @@
-package com.afina.emergencyshaker;
+package com.afina.emergencyshaker.UI;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
+import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.R;
+import com.afina.emergencyshaker.Service.SensorService;
 
 public class MainActivity extends AppCompatActivity {
 
     Intent mServiceIntent;
     private SensorService mSensorService;
-
     Context ctx;
+    public static MainActivity instance;
+    public static boolean sw = false;
 
+    Switch s;
     public Context getCtx() {
         return ctx;
     }
-
-    static MainActivity instance;
-
-    public static boolean sw = false;
-    Switch s;
 
 
     @Override

@@ -8,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 
-import com.afina.emergencyshaker.ShakeDetector;
-
 public class ShakeListener implements ShakeDetector.OnShakeListener {
     private Context ctx;
 

@@ -1,4 +1,4 @@
-package com.afina.emergencyshaker;
+package com.afina.emergencyshaker.Listeners;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

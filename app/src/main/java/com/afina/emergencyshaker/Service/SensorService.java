@@ -1,4 +1,4 @@
-package com.afina.emergencyshaker;
+package com.afina.emergencyshaker.Service;
 
 import android.app.Service;
 import android.content.Context;
@@ -8,9 +8,11 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.UI.MainActivity;
+import com.afina.emergencyshaker.Broadcaster.SensorRestarterBroadcastReceiver;
 
 import java.util.Timer;
 import java.util.TimerTask;
