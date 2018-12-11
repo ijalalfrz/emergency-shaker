@@ -1,4 +1,4 @@
-package com.afina.emergencyshaker.UI;
+package com.afina.emergencyshaker.UIActivity;
 
 import android.Manifest;
 import android.app.ActivityManager;
@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -37,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx = this;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+
         setContentView(R.layout.activity_main);
         mSensorService = new SensorService(getApplicationContext());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());

@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
-import com.afina.emergencyshaker.UI.MainActivity;
+import com.afina.emergencyshaker.UIActivity.MainActivity;
 import com.afina.emergencyshaker.Broadcaster.SensorRestarterBroadcastReceiver;
 
 import java.util.Timer;
