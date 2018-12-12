@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.afina.emergencyshaker.Listeners.ShakeListener;
@@ -14,8 +15,26 @@ import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
 
 public class ConfirmationActivity extends AppCompatActivity {
-
+    public static boolean isActive = false;
     TextView tvCounter;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActive = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActive = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isActive = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +43,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         tvCounter = (TextView) findViewById(R.id.tv_counter);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(ShakeListener.COUNTER_SHAKE));
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {

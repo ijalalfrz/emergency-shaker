@@ -25,7 +25,7 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
     @Override
     public void onShake(int count) {
         sendCountBroadcast(count);
-        if(count == threshold ){
+        if(count == threshold && !ConfirmationActivity.isActive ){
             Intent intent = new Intent(ctx,ConfirmationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
