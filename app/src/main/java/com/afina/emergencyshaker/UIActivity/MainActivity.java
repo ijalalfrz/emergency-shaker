@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
@@ -62,46 +64,24 @@ public class MainActivity extends AppCompatActivity {
         // Navigation drawer
         mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        mDrawerLayout.closeDrawers();
-
-                        Fragment fragment = null;
-                        Class fragmentClass;
-                        int id = menuItem.getItemId();
-                        switch (id) {
-                            case R.id.about:
-
-//                                Intent i = new Intent(MainActivity.this, AboutActivity.class);
-//                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                MainActivity.this.startActivity(i);
-
-
-                                break;
-                            case R.id.settings:
-                                //Do some thing here
-                                // add navigation drawer item onclick method here
-                                break;
-                            case R.id.main_home:
-                                //Do some thing here
-                                // add navigation drawer item onclick method here
-                                break;
-
-                        }
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch(id) {
+                    case R.id.about:
+                        Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
+                    case R.id.settings:
+                        Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                    case R.id.main_home:
+                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                    default:
 
                         return true;
-                    }
-                });
+                }
+            }
+        });
+
 
 
 
@@ -165,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         if(mDrawerLayout.isDrawerOpen(navigationView)){
             mDrawerLayout.closeDrawer(navigationView);
+
         }else {
             finish();
         }
@@ -175,8 +156,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
