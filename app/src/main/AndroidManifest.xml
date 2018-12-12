@@ -33,6 +33,7 @@
             android:name=".UIActivity.ConfirmationActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".UIActivity.AboutActivity"></activity>
     </application>
 
 </manifest>
