@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class DbEmergencyShaker {
 
+    public static class Status{
+        public int id;
+        public int status;
+    }
+
     private SQLiteDatabase db;
     private final OpenHelper dbHelper;
 
@@ -36,6 +41,38 @@ public class DbEmergencyShaker {
         newValues.put("SMS", target.sms);
         newValues.put("EMAIL", target.email);
         return db.insert("TARGET", null, newValues);
+    }
+
+    public long insertStatus(Status st){
+        ContentValues newValues = new ContentValues();
+        newValues.put("STATUS", st.status);
+
+        return  db.insert("STATUS", null, newValues);
+    }
+
+    public Status getLastStatus(){
+        Cursor cur = null;
+        ArrayList<Status> list = new ArrayList<>();
+
+        cur = db.rawQuery("SELECT * FROM STATUS ORDER BY ID DESC Limit 1", null);
+        if(cur.moveToFirst()){
+            do {
+                Status status = new Status();
+                status.id = cur.getInt(0);
+                status.status = cur.getInt(1);
+
+                list.add(status);
+            }while (cur.moveToNext());
+        }
+        cur.close();
+
+        Status out = new Status();
+        for (Status status: list) {
+            out = status;
+        }
+
+        return out;
+
     }
 
     //ambil data mahasiswa berdasarkan nama
