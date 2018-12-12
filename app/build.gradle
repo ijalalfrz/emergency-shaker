@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:28.0.0'
+
     ext {
         lib_version = '28.0.0'
     }
