@@ -64,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inBackground = false;
-//        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("CloseApp", false)) {
-//            if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
-//                finishAffinity();
-//            } else if(Build.VERSION.SDK_INT>=21){
-//                finishAndRemoveTask();
-//            }
-//        }
 
 
         ctx = this;
@@ -160,14 +153,6 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
 
 
-//        button = (Button)findViewById(R.id.btn);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent moveIntent = new Intent(MainActivity.this, SettingActivity.class);
-//                startActivity(moveIntent);
-//            }
-//        });
     }
 
     @Override
