@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
+    private TextView tvPower;
 
 
     @Override
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        tvPower = (TextView)findViewById(R.id.tvPower);
 
 
         s = (Switch)findViewById(R.id.switchID);
@@ -107,17 +110,23 @@ public class MainActivity extends AppCompatActivity {
                     if (!isMyServiceRunning(mSensorService.getClass())) {
                         startService(mServiceIntent);
                     }
+                    tvPower.setText("Power: ON");
+
 
                 }else{
                     sw = false;
+                    tvPower.setText("Power: OFF");
+
                 }
             }
         });
+
 
         if(sw == true){
             s.setChecked(true);
         }else if(sw == false){
             s.setChecked(false);
+
         }
 
 
@@ -165,8 +174,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(sw == true){
             s.setChecked(true);
+
         }else if(sw == false){
             s.setChecked(false);
+
         }
 
         super.onDestroy();
@@ -183,8 +194,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(sw == true){
             s.setChecked(true);
+
         }else if(sw == false){
             s.setChecked(false);
+
         }
 
     }
@@ -195,8 +208,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(sw == true){
             s.setChecked(true);
+
         }else if(sw == false){
             s.setChecked(false);
+
         }
 
     }
@@ -209,8 +224,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if(sw == true){
             s.setChecked(true);
+
         }else if(sw == false){
             s.setChecked(false);
+
         }
 
     }
