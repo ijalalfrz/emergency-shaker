@@ -1,10 +1,14 @@
 package com.afina.emergencyshaker.UIActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,17 +71,18 @@ public class ConfirmationActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int count = intent.getIntExtra(ShakeListener.EXTRA_COUNT,0);
             tvCounter.setText(String.valueOf(count));
+            if(count==15){
+                String phoneNumber = "085703830280";
+                Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+                dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    ctx.startActivity(dialPhoneIntent);
+                }
+            }
+
             now = System.currentTimeMillis();
 
-        }
-    };
-    private BroadcastReceiver shakeStatusReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            isShake = intent.getBooleanExtra(ShakeListener.EXTRA_ISHAKE,false);
-            if(!isShake){
-                ((Activity)ctx).finish();
-            }
         }
     };
 
