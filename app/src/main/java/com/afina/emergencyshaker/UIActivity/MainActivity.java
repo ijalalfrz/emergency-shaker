@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -34,7 +35,7 @@ import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static boolean inBackground = false;
     private Intent mServiceIntent;
     private SensorService mSensorService;
     Context ctx;
@@ -54,12 +55,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        inBackground = true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("CloseApp", false)) {
-            finish();
-        }
+        inBackground = false;
+//        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("CloseApp", false)) {
+//            if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
+//                finishAffinity();
+//            } else if(Build.VERSION.SDK_INT>=21){
+//                finishAndRemoveTask();
+//            }
+//        }
 
 
         ctx = this;
@@ -162,10 +173,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if(mDrawerLayout.isDrawerOpen(navigationView)){
-            mDrawerLayout.closeDrawer(navigationView);
+            //mDrawerLayout.closeDrawer(navigationView);
 
         }else {
-            finish();
+            //finish();
         }
     }
 
@@ -219,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-
+        inBackground = false;
         if(sw == true){
             s.setChecked(true);
 
@@ -250,6 +261,8 @@ public class MainActivity extends AppCompatActivity {
 //        mSensorManager.unregisterListener(mShakeDetector);
 
         super.onPause();
+
+        inBackground = true;
         if(sw == true){
             s.setChecked(true);
 

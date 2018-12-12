@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -91,7 +92,11 @@ public class ConfirmationActivity extends AppCompatActivity {
         timerTask = new TimerTask() {
             public void run() {
                 if(System.currentTimeMillis() - now >= 3000){
-                    ((Activity)ctx).finish();
+                    if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
+                        finishAffinity();
+                    } else if(Build.VERSION.SDK_INT>=21){
+                        finishAndRemoveTask();
+                    }
                     Intent CloseInt = new Intent(getApplicationContext(), MainActivity.class);
                     CloseInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     CloseInt.putExtra("CloseApp", true);
