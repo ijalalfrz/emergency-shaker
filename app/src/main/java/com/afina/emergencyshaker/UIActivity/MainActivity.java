@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean("CloseApp", false)) {
+            finish();
+        }
+
+
         ctx = this;
 
 

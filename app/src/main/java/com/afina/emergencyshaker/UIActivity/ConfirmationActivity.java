@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.afina.emergencyshaker.Broadcaster.SensorRestarterBroadcastReceiver;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.R;
 
@@ -91,6 +92,10 @@ public class ConfirmationActivity extends AppCompatActivity {
             public void run() {
                 if(System.currentTimeMillis() - now >= 3000){
                     ((Activity)ctx).finish();
+                    Intent CloseInt = new Intent(getApplicationContext(), MainActivity.class);
+                    CloseInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    CloseInt.putExtra("CloseApp", true);
+                    startActivity(CloseInt);
                 }
             }
         };

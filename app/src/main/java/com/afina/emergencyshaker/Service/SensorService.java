@@ -53,7 +53,6 @@ public class SensorService extends Service {
     public void onDestroy() {
         Log.i("EXIT", "ondestroy!");
         mSensorManager.unregisterListener(mShakeDetector);
-
         Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);
         sendBroadcast(broadcastIntent);
         stoptimertask();
