@@ -1,5 +1,6 @@
 package com.afina.emergencyshaker.UIActivity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,16 +8,25 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.R;
-import com.afina.emergencyshaker.Service.SensorService;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ConfirmationActivity extends AppCompatActivity {
     public static boolean isActive = false;
-    TextView tvCounter;
+    private TextView tvCounter;
+    private boolean isShake;
+    private TimerTask timerTask;
+    private Timer timer;
+
+    private long now;
+    private Context ctx;
 
     @Override
     protected void onStart() {
@@ -40,8 +50,11 @@ public class ConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
+        ctx = this;
         tvCounter = (TextView) findViewById(R.id.tv_counter);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(ShakeListener.COUNTER_SHAKE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(countReceiver, new IntentFilter(ShakeListener.COUNTER_SHAKE));
+
+        startTimer();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
@@ -49,11 +62,44 @@ public class ConfirmationActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private BroadcastReceiver countReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int count = intent.getIntExtra(ShakeListener.EXTRA_COUNT,0);
             tvCounter.setText(String.valueOf(count));
+            now = System.currentTimeMillis();
+
         }
     };
+    private BroadcastReceiver shakeStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isShake = intent.getBooleanExtra(ShakeListener.EXTRA_ISHAKE,false);
+            if(!isShake){
+                ((Activity)ctx).finish();
+            }
+        }
+    };
+
+    private void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            public void run() {
+                if(System.currentTimeMillis() - now >= 3000){
+                    ((Activity)ctx).finish();
+                }
+            }
+        };
+    }
+
+    public void startTimer() {
+        //set a new Timer
+        timer = new Timer();
+
+        //initialize the TimerTask's job
+        initializeTimerTask();
+
+        //schedule the timer, to wake up every 1 second
+        timer.schedule(timerTask, 1000, 1000); //
+    }
+
 }

@@ -14,9 +14,13 @@ import com.afina.emergencyshaker.UIActivity.ConfirmationActivity;
 public class ShakeListener implements ShakeDetector.OnShakeListener {
 
     public static final String COUNTER_SHAKE = "counter_shake";
-    public static final String EXTRA_COUNT = "extra_count";
+    public static final String SHAKE_STATUS = "shake_status";
 
-    private Context ctx;
+    public static final String EXTRA_COUNT = "extra_count";
+    public static final String EXTRA_ISHAKE= "extra_shake";
+
+
+    private static Context ctx;
     private int threshold = 10;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
@@ -50,8 +54,15 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
         if (count != 0) {
             Intent intent = new Intent(COUNTER_SHAKE);
             intent.putExtra(EXTRA_COUNT, count);
-            //ctx.sendBroadcast(intent);
             LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
         }
     }
+
+    public static void sendShakeStatus(boolean isShake) {
+        Intent intent = new Intent(SHAKE_STATUS);
+        intent.putExtra(EXTRA_ISHAKE, isShake);
+        LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
+    }
+
+
 }
