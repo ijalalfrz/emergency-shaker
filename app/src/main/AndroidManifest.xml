@@ -21,16 +21,19 @@
 
         <service
             android:name=".Service.SensorService"
-            android:enabled="true"></service>
+            android:enabled="true" />
 
         <receiver
             android:name=".Broadcaster.SensorRestarterBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped"></receiver>
+            android:label="RestartServiceWhenStopped" />
 
-        <activity android:name=".UIActivity.ConfirmationActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
+        <activity
+            android:name=".UIActivity.ConfirmationActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".UIActivity.SettingActivity" />
+        <activity android:name=".UIActivity.AddTargetActivity"></activity>
     </application>
 
 </manifest>

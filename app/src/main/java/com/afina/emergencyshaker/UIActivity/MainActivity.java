@@ -11,7 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         return ctx;
     }
 
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         instance = this;
+
+
+        button = (Button)findViewById(R.id.btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent moveIntent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(moveIntent);
+            }
+        });
     }
 
 

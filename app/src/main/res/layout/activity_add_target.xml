@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UIActivity.AddTargetActivity">
+
+    <TextView
+        android:id="@+id/tv_add_nama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="17dp"
+        android:text="Nama"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="34dp" />
+
+    <EditText
+        android:id="@+id/et_nama"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_add_nama"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="53dp" />
+
+    <TextView
+        android:id="@+id/tv_add_jumlah_shake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_nama"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="49dp"
+        android:layout_marginLeft="49dp"
+        android:text="Jumlah Shake"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="112dp" />
+
+    <EditText
+        android:id="@+id/et_jumlah_shake"
+        android:layout_below="@+id/tv_add_jumlah_shake"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="111dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="131dp" />
+
+
+    <TextView
+        android:id="@+id/tv_add_telepon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_jumlah_shake"
+        android:layout_alignStart="@+id/et_sms"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="176dp"
+        android:text="Telepon" />
+
+    <EditText
+        android:id="@+id/et_telepon"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_add_telepon"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="268dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+
+    <TextView
+        android:id="@+id/tv_add_notif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_telepon"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="257dp"
+        android:layout_marginEnd="63dp"
+        android:layout_toStartOf="@+id/btn_add"
+        android:text="Notif" />
+
+    <EditText
+        android:id="@+id/et_notif"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/et_telepon"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="186dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/et_nama"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="332dp"
+        android:text="SMS"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="196dp" />
+
+    <EditText
+        android:id="@+id/et_sms"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginBottom="110dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/et_nama"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="395dp"
+        android:text="Email"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="196dp" />
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="288dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginBottom="53dp"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:text="add" />
+
+</RelativeLayout>
