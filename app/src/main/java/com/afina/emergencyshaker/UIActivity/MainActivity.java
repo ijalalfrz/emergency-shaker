@@ -9,6 +9,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -67,16 +69,41 @@ public class MainActivity extends AppCompatActivity {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
+
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
 
+                        mDrawerLayout.closeDrawers();
 
+                        Fragment fragment = null;
+                        Class fragmentClass;
+                        int id = menuItem.getItemId();
+                        switch (id) {
+                            case R.id.about:
+
+//                                Intent i = new Intent(MainActivity.this, AboutActivity.class);
+//                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                MainActivity.this.startActivity(i);
+
+
+                                break;
+                            case R.id.settings:
+                                //Do some thing here
+                                // add navigation drawer item onclick method here
+                                break;
+                            case R.id.main_home:
+                                //Do some thing here
+                                // add navigation drawer item onclick method here
+                                break;
+
+                        }
 
                         return true;
                     }
                 });
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
