@@ -45,9 +45,9 @@ public class AddTargetActivity extends AppCompatActivity {
 
                 dbEmergencyShaker.open();
                 if(dbEmergencyShaker.insertTarget(target) != -1){
-                    Toast.makeText(getApplicationContext(),String.format("%s Berhasil ditambahkan",target.nama,target.jumlah_shake), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),String.format("%mSwitch Berhasil ditambahkan",target.nama,target.jumlah_shake), Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(getApplicationContext(),String.format("Gagal %s",target.jumlah_shake), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),String.format("Gagal %mSwitch",target.jumlah_shake), Toast.LENGTH_LONG).show();
                 }
             }
         });

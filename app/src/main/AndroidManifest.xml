@@ -32,7 +32,7 @@
         <activity
             android:name=".UIActivity.ConfirmationActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UIActivity.AboutActivity"></activity>
         <activity android:name=".UIActivity.SettingActivity" />
         <activity android:name=".UIActivity.AddTargetActivity"></activity>

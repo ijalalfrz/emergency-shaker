@@ -5,14 +5,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -21,16 +16,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afina.emergencyshaker.Listeners.ShakeDetector;
-import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
 
@@ -38,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     public static boolean inBackground = false;
     private Intent mServiceIntent;
     private SensorService mSensorService;
-    Context ctx;
+    private Context ctx;
     public static MainActivity instance;
     public static boolean sw = false;
 
-    Switch s;
+    Switch mSwitch;
     public Context getCtx() {
         return ctx;
     }
@@ -53,24 +45,22 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private TextView tvPower;
 
+    private DbEmergencyShaker dbEmergencyShaker;
+    private DbEmergencyShaker.Status stat;
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        inBackground = true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         inBackground = false;
+        dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
+        dbEmergencyShaker.open();
 
 
         ctx = this;
 
-
         setTitle("");
-
         setContentView(R.layout.activity_main);
 
         // Navigation drawer
@@ -95,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -118,10 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         tvPower = (TextView)findViewById(R.id.tvPower);
+        mSwitch = (Switch)findViewById(R.id.switchID);
 
+        stat = dbEmergencyShaker.getLastStatus();
+        if(stat != null){
+            if(stat.status == 1){
+                startService(mServiceIntent);
+                mSwitch.setChecked(true);
+                tvPower.setText("Power: ON");
+            }else if(stat.status == 0){
+                mSwitch.setChecked(false);
+                tvPower.setText("Power: OFF");
 
-        s = (Switch)findViewById(R.id.switchID);
-        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            }
+        }
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -131,22 +131,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tvPower.setText("Power: ON");
 
+                    DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
+                    st.status = 1;
+
+                    dbEmergencyShaker.insertStatus(st);
 
                 }else{
                     sw = false;
                     tvPower.setText("Power: OFF");
 
+                    DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
+                    st.status = 0;
+                    SensorService.isActive = false;
+
+                    dbEmergencyShaker.insertStatus(st);
+
                 }
             }
         });
 
-
-        if(sw == true){
-            s.setChecked(true);
-        }else if(sw == false){
-            s.setChecked(false);
-
-        }
 
 
 
@@ -196,14 +199,15 @@ public class MainActivity extends AppCompatActivity {
         stopService(mServiceIntent);
         Log.i("MAINACT", "onDestroy!");
 
-        if(sw == true){
-            s.setChecked(true);
+        stat = dbEmergencyShaker.getLastStatus();
 
-        }else if(sw == false){
-            s.setChecked(false);
+        if(stat.status == 1){
+            mSwitch.setChecked(true);
+        }else if(stat.status == 0){
+            mSwitch.setChecked(false);
 
         }
-
+        dbEmergencyShaker.close();
         super.onDestroy();
 
     }
@@ -215,12 +219,12 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        inBackground = false;
-        if(sw == true){
-            s.setChecked(true);
 
-        }else if(sw == false){
-            s.setChecked(false);
+        stat = dbEmergencyShaker.getLastStatus();
+        if(stat.status == 1){
+            mSwitch.setChecked(true);
+        }else if(stat.status == 0){
+            mSwitch.setChecked(false);
 
         }
 
@@ -230,11 +234,12 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart(){
         super.onRestart();
 
-        if(sw == true){
-            s.setChecked(true);
+        stat = dbEmergencyShaker.getLastStatus();
 
-        }else if(sw == false){
-            s.setChecked(false);
+        if(stat.status == 1){
+            mSwitch.setChecked(true);
+        }else if(stat.status == 0){
+            mSwitch.setChecked(false);
 
         }
 
@@ -242,17 +247,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-        // Add the following line to unregister the Sensor Manager onPause
-//        mSensorManager.unregisterListener(mShakeDetector);
-
         super.onPause();
 
-        inBackground = true;
-        if(sw == true){
-            s.setChecked(true);
+        stat = dbEmergencyShaker.getLastStatus();
 
-        }else if(sw == false){
-            s.setChecked(false);
+        if(stat.status == 1){
+            mSwitch.setChecked(true);
+        }else if(stat.status == 0){
+            mSwitch.setChecked(false);
 
         }
 
