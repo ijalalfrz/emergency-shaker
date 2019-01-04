@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_settings_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\afina" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_switch_on" />
+                            <entry key="sourceFile" value="E:\AKADEMIS\UNIVERSITI\SEMESTER 5\MOBPROG\TUBES MOBPRO\switch_on.svg" />
                           </map>
                         </option>
                       </PersistentState>
