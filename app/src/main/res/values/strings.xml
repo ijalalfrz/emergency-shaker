@@ -3,6 +3,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+<<<<<<< HEAD
     <string name="title">Emergency Shaker</string>
     <string name="slogan">Siap membantumu di saat-saat darurat.</string>
+=======
+    <string name="nav_home">Home</string>
+    <string name="Pengaturan">nav_pengaturan</string>
+    <string name="nav_pengaturan">Pengaturan</string>
+    <string name="Tentang">nav_tentang</string>
+    <string name="nav_tentang">Tentang</string>
+    <string name="nav_keluar">Keluar</string>
+>>>>>>> 0d757d3ef15c58ff2ec05643f255b5e1c57e0887
 </resources>

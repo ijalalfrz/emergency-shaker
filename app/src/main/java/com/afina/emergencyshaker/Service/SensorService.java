@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SensorService extends Service {
+    public static boolean isActive=true;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -37,13 +38,15 @@ public class SensorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
 
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-        ShakeListener shakeListener = new ShakeListener(this);
-        mShakeDetector.setOnShakeListener(shakeListener);
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mShakeDetector = new ShakeDetector();
+
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+            ShakeListener shakeListener = new ShakeListener(this);
+            mShakeDetector.setOnShakeListener(shakeListener);
+
 
         startTimer();
         return START_STICKY;
@@ -54,7 +57,9 @@ public class SensorService extends Service {
         Log.i("EXIT", "ondestroy!");
         mSensorManager.unregisterListener(mShakeDetector);
         Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);
-        sendBroadcast(broadcastIntent);
+        if(isActive){
+            sendBroadcast(broadcastIntent);
+        }
         stoptimertask();
         super.onDestroy();
 

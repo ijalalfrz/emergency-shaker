@@ -1,37 +1,49 @@
 package com.afina.emergencyshaker.UIActivity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.afina.emergencyshaker.Broadcaster.SensorRestarterBroadcastReceiver;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ConfirmationActivity extends AppCompatActivity {
+public class ConfirmationActivity extends AppCompatActivity implements View.OnClickListener {
     public static boolean isActive = false;
-    private TextView tvCounter;
+    private TextView tvCounter,tvNama,tvMenelepon,tvShake;
+    private Button btnBatal;
     private boolean isShake;
     private TimerTask timerTask;
     private Timer timer;
-
+    private ArrayList<Target> listTarget;
+    private Target temp;
     private long now;
     private Context ctx;
+    int index=0;
+    int condon=3;
+    private int shakeCount = 0;
+    private CountDownTimer countDownTimer;
+
+    private boolean isNext = false;
+    private boolean foundContact = false;
 
     @Override
     protected void onStart() {
@@ -46,9 +58,16 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        isActive = false;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         isActive = false;
+
     }
 
     @Override
@@ -56,8 +75,31 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
         ctx = this;
+
+
+
+        listTarget = new ArrayList<>();
+        Target target = new Target();
+        target.jumlah_shake = 5;
+        target.nama = "Polisi";
+        target.telepon = "085703971988";
+        listTarget.add(target);
+        target = new Target();
+        target.jumlah_shake = 10;
+        target.nama = "Cacuk";
+        target.telepon = "085703971988";
+        listTarget.add(target);
+
+
         tvCounter = (TextView) findViewById(R.id.tv_counter);
+        tvNama = (TextView) findViewById(R.id.tv_nama);
+        tvMenelepon = (TextView) findViewById(R.id.tv_menelepon);
+        tvShake = (TextView) findViewById(R.id.tv_shake);
+        btnBatal = (Button) findViewById(R.id.btn_batal);
+        btnBatal.setOnClickListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(countReceiver, new IntentFilter(ShakeListener.COUNTER_SHAKE));
+
+
 
         startTimer();
 
@@ -71,15 +113,64 @@ public class ConfirmationActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int count = intent.getIntExtra(ShakeListener.EXTRA_COUNT,0);
-            tvCounter.setText(String.valueOf(count));
-            if(count==15){
-                String phoneNumber = "085703830280";
-                Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
-                dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            shakeCount=count;
 
-                if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    ctx.startActivity(dialPhoneIntent);
+            if(listTarget.size()>index && listTarget.get(index)!=null){
+                temp = listTarget.get(index);
+
+                if(shakeCount==temp.jumlah_shake){
+                    foundContact = true;
+
+                    btnBatal.setVisibility(View.VISIBLE);
+                    tvShake.setText("MENELEPON:");
+                    tvCounter.setText(temp.nama);
+                    tvMenelepon.setText("DALAM");
+                    countDownTimer = new CountDownTimer(5000, 1000) {
+
+                        public void onTick(long millisUntilFinished) {
+                            tvNama.setText(""+condon);
+                            if(shakeCount>temp.jumlah_shake){
+
+                                foundContact=false;
+                                isNext = true;
+
+                                this.cancel();
+                            }
+                            condon-=1;
+                            //here you can have your logic to set text to edittext
+                        }
+
+                        public void onFinish() {
+
+                            String phoneNumber = temp.telepon;
+                            Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+                            dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                                ctx.startActivity(dialPhoneIntent);
+                                finish();
+                            }
+                        }
+
+                    }.start();
+
+
+                }else {
+                    if(isNext){
+                        condon=3;
+                        index++;
+                        isNext = false;
+                    }
+                    temp = listTarget.get(index);
+                    foundContact = false;
+                    tvCounter.setText(String.valueOf(shakeCount+"/"+temp.jumlah_shake));
+                    tvShake.setText("SHAKE COUNTER");
+                    tvMenelepon.setText("MENELEPON");
+                    tvNama.setText(temp.nama);
+                    btnBatal.setVisibility(View.INVISIBLE);
                 }
+            }else{
+                foundContact = false;
             }
 
             now = System.currentTimeMillis();
@@ -90,12 +181,16 @@ public class ConfirmationActivity extends AppCompatActivity {
     private void initializeTimerTask() {
         timerTask = new TimerTask() {
             public void run() {
-                if(System.currentTimeMillis() - now >= 3000){
-                    ((Activity)ctx).finish();
-                    Intent CloseInt = new Intent(getApplicationContext(), MainActivity.class);
-                    CloseInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    CloseInt.putExtra("CloseApp", true);
-                    startActivity(CloseInt);
+                if(!foundContact){
+
+                    if(System.currentTimeMillis() - now >= 3000){
+                        if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
+                            finishAffinity();
+                        } else if(Build.VERSION.SDK_INT>=21){
+                            finishAndRemoveTask();
+                        }
+
+                    }
                 }
             }
         };
@@ -105,11 +200,23 @@ public class ConfirmationActivity extends AppCompatActivity {
         //set a new Timer
         timer = new Timer();
 
-        //initialize the TimerTask's job
+        //initialize the TimerTask'mSwitch job
         initializeTimerTask();
 
         //schedule the timer, to wake up every 1 second
         timer.schedule(timerTask, 1000, 1000); //
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btn_batal){
+            countDownTimer.cancel();
+            if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
+                finishAffinity();
+            } else if(Build.VERSION.SDK_INT>=21){
+                finishAndRemoveTask();
+            }
+
+        }
+    }
 }

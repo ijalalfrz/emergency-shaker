@@ -9,60 +9,54 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.afina.emergencyshaker.Model.Target;
+import com.afina.emergencyshaker.Service.SensorService;
 import com.afina.emergencyshaker.UIActivity.ConfirmationActivity;
+
+import java.util.ArrayList;
 
 public class ShakeListener implements ShakeDetector.OnShakeListener {
 
     public static final String COUNTER_SHAKE = "counter_shake";
-    public static final String SHAKE_STATUS = "shake_status";
-
     public static final String EXTRA_COUNT = "extra_count";
-    public static final String EXTRA_ISHAKE= "extra_shake";
+    private ArrayList<Target> listTarget;
 
-
+    private int index = 0;
     private static Context ctx;
     private int threshold = 10;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
+
+        listTarget = new ArrayList<>();
+        Target target = new Target();
+        target.jumlah_shake = 5;
+        target.nama = "Polisi";
+        target.telepon = "085703971988";
+        listTarget.add(target);
+
+        threshold = listTarget.get(index).jumlah_shake;
     }
 
     @Override
     public void onShake(int count) {
-        sendCountBroadcast(count);
-        if(count == threshold && !ConfirmationActivity.isActive ){
+        sendCountBroadcast(count,SensorService.isActive);
+
+        if(count == (threshold - 3) && !ConfirmationActivity.isActive && SensorService.isActive){
             Intent intent = new Intent(ctx,ConfirmationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
-
-
         }
-
-//
-//        String phoneNumber = "085703830280";
-//        Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
-//        dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions((Activity) ctx, new String[]{Manifest.permission.CALL_PHONE},1);
-//
-//        }else{
-//            ctx.startActivity(dialPhoneIntent);
-//        }
     }
 
-    private void sendCountBroadcast(int count) {
-        if (count != 0) {
+    private void sendCountBroadcast(int count,boolean isActive) {
+        if (count != 0 && isActive) {
             Intent intent = new Intent(COUNTER_SHAKE);
             intent.putExtra(EXTRA_COUNT, count);
             LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
         }
     }
 
-    public static void sendShakeStatus(boolean isShake) {
-        Intent intent = new Intent(SHAKE_STATUS);
-        intent.putExtra(EXTRA_ISHAKE, isShake);
-        LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
-    }
+
 
 
 }
