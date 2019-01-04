@@ -14,8 +14,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -175,6 +179,10 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(moveIntent);
 //            }
 //        });
+
+
+
+
     }
 
     @Override
@@ -280,5 +288,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void klikTest(View v){
+        Intent moveIntent = new Intent(MainActivity.this, AddTargetActivity.class);
+        startActivity(moveIntent);
     }
 }
