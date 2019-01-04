@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
-    private TextView tvPower;
+    private TextView tvPower, tvDeskripsi;
 
     private DbEmergencyShaker dbEmergencyShaker;
     private DbEmergencyShaker.Status stat;
@@ -95,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        String deskripsi = "<b>Emergency Shaker</b> merupakan aplikasi yang dapat membantumu dalam kondisi darurat. <br> Perlu bantuan polisi? Ambulans? Atau kerabat terdekat? <br><b>Emergency Shaker</b> akan membantumu menghubungi mereka dengan lebih cepat!";
+
+        tvDeskripsi = (TextView)findViewById(R.id.tv_deskripsi);
+        tvDeskripsi.setText(Html.fromHtml(deskripsi));
+
+
 
 
         // End of Navigation drawer
@@ -111,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
         tvPower = (TextView)findViewById(R.id.tvPower);
         mSwitch = (Switch)findViewById(R.id.switchID);
+
+
 
         stat = dbEmergencyShaker.getLastStatus();
         if(stat != null){
@@ -138,7 +146,13 @@ public class MainActivity extends AppCompatActivity {
                     DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
                     st.status = 1;
 
-                    dbEmergencyShaker.insertStatus(st);
+                    if (dbEmergencyShaker.getLastStatus() != null){
+                        dbEmergencyShaker.insertStatus(st);
+                    }else{
+                        int id = dbEmergencyShaker.getLastStatus().id;
+                        dbEmergencyShaker.updateStatus(st.status, id);
+                    }
+
 
                 }else{
                     sw = false;
@@ -148,12 +162,16 @@ public class MainActivity extends AppCompatActivity {
                     st.status = 0;
                     SensorService.isActive = false;
 
-                    dbEmergencyShaker.insertStatus(st);
+                    if (dbEmergencyShaker.getLastStatus() != null){
+                        dbEmergencyShaker.insertStatus(st);
+                    }else{
+                        int id = dbEmergencyShaker.getLastStatus().id;
+                        dbEmergencyShaker.updateStatus(st.status, id);
+                    }
 
                 }
             }
         });
-
 
 
 

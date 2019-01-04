@@ -75,6 +75,12 @@ public class DbEmergencyShaker {
 
     }
 
+    public void updateStatus(int statusNew, int id){
+        String sql;
+        sql = "UPDATE STATUS SET status = "+statusNew+" WHERE id = "+ id;
+        db.execSQL(sql);
+    }
+
     //ambil data mahasiswa berdasarkan nama
     public Target getTarget(String nama){
         Cursor cur = null;
