@@ -34,7 +34,6 @@
             android:name=".UIActivity.ConfirmationActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".UIActivity.AboutActivity" />
         <activity android:name=".UIActivity.SettingActivity" />
         <activity android:name=".UIActivity.AddTargetActivity" />
         <activity android:name=".UIActivity.MainActivity"></activity>
