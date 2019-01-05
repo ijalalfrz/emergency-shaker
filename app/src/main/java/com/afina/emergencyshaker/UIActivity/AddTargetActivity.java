@@ -116,6 +116,7 @@ public class AddTargetActivity extends AppCompatActivity{
 
 
 
+                dbEmergencyShaker.open();
 
                 try{
                     target = new Target();
@@ -124,6 +125,19 @@ public class AddTargetActivity extends AppCompatActivity{
                     target.telepon = etTelepon.getText().toString();
                     target.yes_telepon = 0;
                     target.yes_sms = 0;
+
+                    ArrayList<Target> arr = new ArrayList<>();
+                    arr = dbEmergencyShaker.getAllTarget();
+                    int stat = 1;
+                    String nama = "";
+
+                    for (Target data: arr){
+                        if (data.jumlah_shake == target.jumlah_shake){
+                            stat = 0;
+                            nama = data.nama;
+                        }
+                    }
+
                     if (item.equals("Lainnya")){
                         if (!cbTelepon.isChecked() && !cbSms.isChecked()){
                             Toast toast = Toast.makeText(getApplicationContext(), "Mohon memilih salah satu metode pemanggilan.", Toast.LENGTH_SHORT);
@@ -136,11 +150,18 @@ public class AddTargetActivity extends AppCompatActivity{
                                 target.yes_telepon = 1;
                             }
 
-                            if (target.jumlah_shake <= 5){
+
+
+                            if (target.jumlah_shake == 5){
                                 Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
                                 toast.show();
+                            }else if (stat == 0){
+                                Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + target.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
+                                toast.show();
                             }else{
+
                                 insert();
+
                             }
                         }
                     }else{
@@ -148,13 +169,17 @@ public class AddTargetActivity extends AppCompatActivity{
                         if (target.jumlah_shake <= 5){
                             Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
                             toast.show();
+                        }else if (stat == 0){
+                            Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + target.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
+                            toast.show();
                         }else{
 
-
                             insert();
+
                         }
                     }
-                }catch (Exception e){
+                }
+                catch (Exception e){
                     Toast toast = Toast.makeText(getApplicationContext(), "Mohon mengisi data dengan benar.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -163,7 +188,6 @@ public class AddTargetActivity extends AppCompatActivity{
     }
 
     public void insert(){
-        dbEmergencyShaker.open();
         if(dbEmergencyShaker.insertTarget(target) != -1){
             Toast toast = Toast.makeText(getApplicationContext(), target.nama + " berhasil ditambahkan", Toast.LENGTH_SHORT);
             toast.show();
@@ -174,9 +198,9 @@ public class AddTargetActivity extends AppCompatActivity{
     }
 
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        dbEmergencyShaker.close();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbEmergencyShaker.close();
+    }
 }

@@ -105,7 +105,7 @@ public class DbEmergencyShaker {
         Cursor cur = null;
         ArrayList<Target> out = new ArrayList<>();
 
-        cur = db.rawQuery("SELECT id, nama, jumlah_shake, telepon, yes_telepon, yes_sms FROM TARGET Limit 10", null);
+        cur = db.rawQuery("SELECT * FROM TARGET", null);
         if(cur.moveToFirst()){
             do {
                 Target target = new Target();

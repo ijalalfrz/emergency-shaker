@@ -17,6 +17,8 @@ import com.afina.emergencyshaker.R;
 public class TentangFragment extends Fragment {
     TextView tvDeskripsi;
 
+
+
     public TentangFragment() {
         // Required empty public constructor
     }

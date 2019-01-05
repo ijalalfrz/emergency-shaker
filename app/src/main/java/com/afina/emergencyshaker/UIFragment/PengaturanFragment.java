@@ -31,6 +31,8 @@ public class PengaturanFragment extends Fragment {
 
     Button btnAddTarget;
 
+    ListTargetAdapter adapter;
+
     View view;
 
     public PengaturanFragment() {
@@ -43,15 +45,19 @@ public class PengaturanFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_pengaturan, container, false);
+        dbMhs = new DbEmergencyShaker(view.getContext());
+        dbMhs.open();
 
+        adapter = new ListTargetAdapter(view.getContext());
+        ArrayList<Target> arr = new ArrayList<>();
+        arr = dbMhs.getAllTarget();
+        adapter.setListTarget(arr);
 
         rvTargetList = (RecyclerView)view.findViewById(R.id.rv_list_target);
         rvTargetList.setHasFixedSize(true);
 
         targetArrayList = new ArrayList<Target>();
 
-        dbMhs = new DbEmergencyShaker(view.getContext());
-        dbMhs.open();
         targetArrayList = dbMhs.getAllTarget();
 
         btnAddTarget = (Button)view.findViewById(R.id.btn_add_target);
@@ -67,8 +73,8 @@ public class PengaturanFragment extends Fragment {
         btnHapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbMhs.open();
                 dbMhs.deleteAllTarget();
+                adapter.notifyDataSetChanged();
 
             }
         });
