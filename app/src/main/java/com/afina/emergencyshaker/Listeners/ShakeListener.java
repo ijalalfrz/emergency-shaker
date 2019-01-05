@@ -23,13 +23,13 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
 
     private int index = 0;
     private static Context ctx;
-    private int threshold = 10;
+    private int threshold;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
 
         listTarget = new ArrayList<>();
         Target target = new Target();
-        target.jumlah_shake = 5;
+        target.jumlah_shake = 10;
         target.nama = "Polisi";
         target.telepon = "085703971988";
         listTarget.add(target);
@@ -39,13 +39,14 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
 
     @Override
     public void onShake(int count) {
-        sendCountBroadcast(count,SensorService.isActive);
 
-        if(count == (threshold - 3) && !ConfirmationActivity.isActive && SensorService.isActive){
+
+        if(count > 5 && !ConfirmationActivity.isActive && SensorService.isActive){
             Intent intent = new Intent(ctx,ConfirmationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
         }
+        sendCountBroadcast(count,SensorService.isActive);
     }
 
     private void sendCountBroadcast(int count,boolean isActive) {

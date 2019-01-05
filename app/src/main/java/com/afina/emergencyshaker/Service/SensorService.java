@@ -19,6 +19,8 @@ import java.util.TimerTask;
 
 public class SensorService extends Service {
     public static boolean isActive=true;
+    public static boolean isBatal =true;
+
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
