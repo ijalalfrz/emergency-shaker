@@ -73,9 +73,12 @@ public class LayoutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         dbEmergencyShaker.close();
+
         super.onDestroy();
 
     }
+
+
 
     public void initUI(){
         homeFragment = new HomeFragment();
@@ -160,6 +163,7 @@ public class LayoutActivity extends AppCompatActivity {
     }
 
     public void checkService(){
+        dbEmergencyShaker.open();
         stat = dbEmergencyShaker.getLastStatus();
         if(stat != null){
             if(stat.status == 1){
@@ -171,6 +175,8 @@ public class LayoutActivity extends AppCompatActivity {
     }
 
     public boolean getStatus(){
+        dbEmergencyShaker.open();
+
         stat = dbEmergencyShaker.getLastStatus();
 
         if(stat != null){

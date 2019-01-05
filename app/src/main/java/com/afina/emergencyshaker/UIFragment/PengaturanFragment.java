@@ -47,6 +47,29 @@ public class PengaturanFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_pengaturan, container, false);
         dbMhs = new DbEmergencyShaker(view.getContext());
         dbMhs.open();
+        loadData();
+        // Inflate the layout for this fragment
+        return view;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dbMhs = new DbEmergencyShaker(view.getContext());
+        dbMhs.open();
+        loadData();
+    }
+
+    private void showRecyclerList(){
+        rvTargetList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        ListTargetAdapter listTargetAdapter = new ListTargetAdapter(view.getContext());
+        listTargetAdapter.setListTarget(targetArrayList);
+        rvTargetList.setAdapter(listTargetAdapter);
+    }
+
+    private void loadData(){
+
 
         adapter = new ListTargetAdapter(view.getContext());
         ArrayList<Target> arr = new ArrayList<>();
@@ -80,25 +103,13 @@ public class PengaturanFragment extends Fragment {
         });
 
         showRecyclerList();
-
-        // Inflate the layout for this fragment
-        return view;
-
-    }
-
-
-    private void showRecyclerList(){
-        rvTargetList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        ListTargetAdapter listTargetAdapter = new ListTargetAdapter(view.getContext());
-        listTargetAdapter.setListTarget(targetArrayList);
-        rvTargetList.setAdapter(listTargetAdapter);
     }
 
 
 //
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        dbMhs.close();
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dbMhs.close();
+    }
 }

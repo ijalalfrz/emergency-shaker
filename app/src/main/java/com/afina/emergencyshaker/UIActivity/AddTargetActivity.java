@@ -42,7 +42,21 @@ public class AddTargetActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_target);
+        dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
+        dbEmergencyShaker.open();
+        loadData();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
+        dbEmergencyShaker.open();
+        loadData();
+    }
+
+    public void loadData(){
         spJenis = (Spinner)findViewById(R.id.sp_jenis);
         arrTarget = new ArrayList<>();
 
@@ -105,7 +119,6 @@ public class AddTargetActivity extends AppCompatActivity{
             }
         });
 
-        dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
 
 
 
@@ -116,7 +129,7 @@ public class AddTargetActivity extends AppCompatActivity{
 
 
 
-                dbEmergencyShaker.open();
+
 
                 try{
                     target = new Target();
