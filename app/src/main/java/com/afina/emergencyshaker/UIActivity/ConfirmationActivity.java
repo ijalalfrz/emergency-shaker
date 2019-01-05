@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
+import com.afina.emergencyshaker.Service.SensorService;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -80,12 +81,12 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
         listTarget = new ArrayList<>();
         Target target = new Target();
-        target.jumlah_shake = 5;
+        target.jumlah_shake = 10;
         target.nama = "Polisi";
         target.telepon = "085703971988";
         listTarget.add(target);
         target = new Target();
-        target.jumlah_shake = 10;
+        target.jumlah_shake = 15;
         target.nama = "Cacuk";
         target.telepon = "085703971988";
         listTarget.add(target);
@@ -128,16 +129,19 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                     countDownTimer = new CountDownTimer(5000, 1000) {
 
                         public void onTick(long millisUntilFinished) {
-                            tvNama.setText(""+condon);
+                            if(isNext){
+                                tvNama.setText("");
+                            }else{
+                                tvNama.setText(""+condon);
+                            }
                             if(shakeCount>temp.jumlah_shake){
-
+                                SensorService.isBatal = true;
                                 foundContact=false;
                                 isNext = true;
 
                                 this.cancel();
                             }
                             condon-=1;
-                            //here you can have your logic to set text to edittext
                         }
 
                         public void onFinish() {
@@ -147,7 +151,8 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                             dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                             if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                                ctx.startActivity(dialPhoneIntent);
+                                if(SensorService.isBatal) ctx.startActivity(dialPhoneIntent);
+                                SensorService.isBatal = false;
                                 finish();
                             }
                         }
@@ -161,12 +166,16 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         index++;
                         isNext = false;
                     }
-                    temp = listTarget.get(index);
+                    tvNama.setText("");
+
+                    if(index<listTarget.size()){
+                        temp = listTarget.get(index);
+                        tvCounter.setText(String.valueOf(shakeCount+"/"+temp.jumlah_shake));
+                        tvNama.setText(temp.nama);
+                    }
                     foundContact = false;
-                    tvCounter.setText(String.valueOf(shakeCount+"/"+temp.jumlah_shake));
                     tvShake.setText("SHAKE COUNTER");
                     tvMenelepon.setText("MENELEPON");
-                    tvNama.setText(temp.nama);
                     btnBatal.setVisibility(View.INVISIBLE);
                 }
             }else{
@@ -184,6 +193,8 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                 if(!foundContact){
 
                     if(System.currentTimeMillis() - now >= 3000){
+                        index = 0;
+                        shakeCount = 0;
                         if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
                             finishAffinity();
                         } else if(Build.VERSION.SDK_INT>=21){
@@ -211,11 +222,15 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if(v.getId() == R.id.btn_batal){
             countDownTimer.cancel();
+            shakeCount = 0;
+            index = 0;
+            SensorService.isBatal = true;
             if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
                 finishAffinity();
             } else if(Build.VERSION.SDK_INT>=21){
                 finishAndRemoveTask();
             }
+
 
         }
     }
