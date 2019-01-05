@@ -149,7 +149,7 @@ public class AddTargetActivity extends AppCompatActivity{
                             Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
                             toast.show();
                         }else{
-                            
+
 
                             insert();
                         }
