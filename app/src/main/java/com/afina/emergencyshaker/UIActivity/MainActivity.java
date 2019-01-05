@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
+import com.afina.emergencyshaker.Model.Status;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
 
@@ -47,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
-    private TextView tvPower, tvDeskripsi;
+    private TextView tvPower;
 
     private DbEmergencyShaker dbEmergencyShaker;
-    private DbEmergencyShaker.Status stat;
+    private Status stat;
 
 
     @Override
@@ -95,10 +96,7 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        String deskripsi = "<b>Emergency Shaker</b> merupakan aplikasi yang dapat membantumu dalam kondisi darurat. <br> Perlu bantuan polisi? Ambulans? Atau kerabat terdekat? <br><b>Emergency Shaker</b> akan membantumu menghubungi mereka dengan lebih cepat!";
 
-        tvDeskripsi = (TextView)findViewById(R.id.tv_deskripsi);
-        tvDeskripsi.setText(Html.fromHtml(deskripsi));
 
 
 
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tvPower.setText("Power: ON");
 
-                    DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
+                    Status st = new Status();
                     st.status = 1;
 
                     if (dbEmergencyShaker.getLastStatus() != null){
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     sw = false;
                     tvPower.setText("Power: OFF");
 
-                    DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
+                    Status st = new Status();
                     st.status = 0;
                     SensorService.isActive = false;
 
@@ -282,8 +280,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void klikTest(View v){
-        Intent moveIntent = new Intent(MainActivity.this, AddTargetActivity.class);
-        startActivity(moveIntent);
-    }
 }

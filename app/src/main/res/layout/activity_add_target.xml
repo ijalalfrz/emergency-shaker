@@ -6,158 +6,138 @@
     android:layout_height="match_parent"
     tools:context=".UIActivity.AddTargetActivity">
 
-    <TextView
-        android:id="@+id/tv_add_nama"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="17dp"
-        android:text="Nama"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="34dp" />
+        android:orientation="vertical"
+        android:gravity="left"
+        android:layout_margin="@dimen/activity_vertical_margin">
 
-    <EditText
-        android:id="@+id/et_nama"
-        android:layout_width="288dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            android:id="@+id/layoutTarget">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jenis" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sp_jenis">
+
+            </Spinner>
+
+            <TextView
+                android:id="@+id/tv_add_nama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_nama"/>
+
+            <TextView
+                android:id="@+id/tv_add_jumlah_shake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jumlah Shake" />
+
+            <EditText
+                android:id="@+id/et_jumlah_shake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_add_telepon"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Telepon" />-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/et_telepon"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="SMS"/>-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/et_sms"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/layoutPlus">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nomor Telepon"/>
+
+            <EditText
+                android:id="@+id/et_no_telp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Metode"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Panggil melalui telepon"
+                android:id="@+id/cb_telepon"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kirim SMS"
+                android:id="@+id/cb_sms"/>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_add_nama"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="53dp" />
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin"
+        android:layout_alignParentBottom="true">
 
-    <TextView
-        android:id="@+id/tv_add_jumlah_shake"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_nama"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="49dp"
-        android:layout_marginLeft="49dp"
-        android:text="Jumlah Shake"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="112dp" />
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:text="simpan" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/et_jumlah_shake"
-        android:layout_below="@+id/tv_add_jumlah_shake"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="111dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="131dp" />
-
-
-    <TextView
-        android:id="@+id/tv_add_telepon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_jumlah_shake"
-        android:layout_alignLeft="@+id/et_sms"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="176dp"
-        android:text="Telepon" />
-
-    <EditText
-        android:id="@+id/et_telepon"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_add_telepon"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="268dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="215dp" />
-
-
-    <TextView
-        android:id="@+id/tv_add_notif"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_telepon"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="257dp"
-        android:layout_marginRight="63dp"
-        android:layout_toLeftOf="@+id/btn_add"
-        android:text="Notif" />
-
-    <EditText
-        android:id="@+id/et_notif"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/et_telepon"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginBottom="186dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="215dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/et_nama"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="332dp"
-        android:text="SMS"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="196dp" />
-
-    <EditText
-        android:id="@+id/et_sms"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginLeft="47dp"
-        android:layout_marginBottom="110dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="215dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/et_nama"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="395dp"
-        android:text="Email"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="196dp" />
-
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="288dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginLeft="47dp"
-        android:layout_marginBottom="53dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="215dp" />
-
-
-
-    <Button
-        android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"
-        android:text="add" />
 
 </RelativeLayout>

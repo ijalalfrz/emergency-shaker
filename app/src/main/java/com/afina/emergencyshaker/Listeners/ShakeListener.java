@@ -31,7 +31,6 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
         Target target = new Target();
         target.jumlah_shake = 5;
         target.nama = "Polisi";
-        target.telepon = "085703971988";
         listTarget.add(target);
 
         threshold = listTarget.get(index).jumlah_shake;
