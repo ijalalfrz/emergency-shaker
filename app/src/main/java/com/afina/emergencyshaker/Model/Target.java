@@ -9,9 +9,24 @@ public class Target implements Parcelable {
     public String nama;
     public int jumlah_shake;
     public String telepon;
-    public String notif;
-    public String sms;
-    public String email;
+    public int yes_telepon;
+    public int yes_sms;
+
+    public int getYes_telepon() {
+        return yes_telepon;
+    }
+
+    public void setYes_telepon(int yes_telepon) {
+        this.yes_telepon = yes_telepon;
+    }
+
+    public int getYes_sms() {
+        return yes_sms;
+    }
+
+    public void setYes_sms(int yes_sms) {
+        this.yes_sms = yes_sms;
+    }
 
     public Target(){
     }
@@ -48,29 +63,10 @@ public class Target implements Parcelable {
         this.telepon = telepon;
     }
 
-    public String getNotif() {
-        return notif;
-    }
 
-    public void setNotif(String notif) {
-        this.notif = notif;
-    }
 
-    public String getSms() {
-        return sms;
-    }
 
-    public void setSms(String sms) {
-        this.sms = sms;
-    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public int describeContents() {
@@ -83,9 +79,8 @@ public class Target implements Parcelable {
         dest.writeString(this.nama);
         dest.writeInt(this.jumlah_shake);
         dest.writeString(this.telepon);
-        dest.writeString(this.notif);
-        dest.writeString(this.sms);
-        dest.writeString(this.email);
+        dest.writeInt(this.yes_telepon);
+        dest.writeInt(this.yes_sms);
     }
 
     protected Target(Parcel in) {
@@ -93,12 +88,11 @@ public class Target implements Parcelable {
         this.nama = in.readString();
         this.jumlah_shake = in.readInt();
         this.telepon = in.readString();
-        this.notif = in.readString();
-        this.sms = in.readString();
-        this.email = in.readString();
+        this.yes_telepon = in.readInt();
+        this.yes_sms = in.readInt();
     }
 
-    public static final Parcelable.Creator<Target> CREATOR = new Parcelable.Creator<Target>() {
+    public static final Creator<Target> CREATOR = new Creator<Target>() {
         @Override
         public Target createFromParcel(Parcel source) {
             return new Target(source);

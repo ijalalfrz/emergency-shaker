@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
+import com.afina.emergencyshaker.Model.Status;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
 import com.afina.emergencyshaker.UIFragment.HomeFragment;
@@ -40,7 +41,7 @@ public class LayoutActivity extends AppCompatActivity {
 
 
     private DbEmergencyShaker dbEmergencyShaker;
-    private DbEmergencyShaker.Status stat;
+    private Status stat;
 
 
 
@@ -73,9 +74,12 @@ public class LayoutActivity extends AppCompatActivity {
     protected void onDestroy() {
         stopService(mServiceIntent);
         dbEmergencyShaker.close();
+
         super.onDestroy();
 
     }
+
+
 
     public void initUI(){
         homeFragment = new HomeFragment();
@@ -160,6 +164,7 @@ public class LayoutActivity extends AppCompatActivity {
     }
 
     public void checkService(){
+        dbEmergencyShaker.open();
         stat = dbEmergencyShaker.getLastStatus();
         if(stat != null){
             if(stat.status == 1){
@@ -171,6 +176,8 @@ public class LayoutActivity extends AppCompatActivity {
     }
 
     public boolean getStatus(){
+        dbEmergencyShaker.open();
+
         stat = dbEmergencyShaker.getLastStatus();
 
         if(stat != null){
@@ -186,7 +193,7 @@ public class LayoutActivity extends AppCompatActivity {
 
 
     public void setStatusService(boolean setting){
-        DbEmergencyShaker.Status st = new DbEmergencyShaker.Status();
+        Status st = new Status();
         if(setting){
             st.status = 1;
             dbEmergencyShaker.insertStatus(st);

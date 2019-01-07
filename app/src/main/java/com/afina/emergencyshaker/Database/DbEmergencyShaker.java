@@ -6,16 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.afina.emergencyshaker.Helper.OpenHelper;
+import com.afina.emergencyshaker.Model.Status;
 import com.afina.emergencyshaker.Model.Target;
 
 import java.util.ArrayList;
 
 public class DbEmergencyShaker {
-
-    public static class Status{
-        public int id;
-        public int status;
-    }
 
     private SQLiteDatabase db;
     private final OpenHelper dbHelper;
@@ -37,9 +33,8 @@ public class DbEmergencyShaker {
         newValues.put("NAMA", target.nama);
         newValues.put("JUMLAH_SHAKE", target.jumlah_shake);
         newValues.put("TELEPON", target.telepon);
-        newValues.put("NOTIF", target.notif);
-        newValues.put("SMS", target.sms);
-        newValues.put("EMAIL", target.email);
+        newValues.put("YES_TELEPON", target.yes_telepon);
+        newValues.put("YES_SMS", target.yes_sms);
         return db.insert("TARGET", null, newValues);
     }
 
@@ -99,9 +94,8 @@ public class DbEmergencyShaker {
             target.nama = cur.getString(1);
             target.jumlah_shake = cur.getInt(2);
             target.telepon = cur.getString(3);
-            target.notif = cur.getString(4);
-            target.sms = cur.getString(5);
-            target.email = cur.getString(6);
+            target.yes_telepon = cur.getInt(4);
+            target.yes_sms = cur.getInt(5);
         }
         cur.close();
         return target;
@@ -111,7 +105,7 @@ public class DbEmergencyShaker {
         Cursor cur = null;
         ArrayList<Target> out = new ArrayList<>();
 
-        cur = db.rawQuery("SELECT id, nama, jumlah_shake, telepon, notif, sms, email FROM TARGET Limit 10", null);
+        cur = db.rawQuery("SELECT * FROM TARGET", null);
         if(cur.moveToFirst()){
             do {
                 Target target = new Target();
@@ -119,9 +113,8 @@ public class DbEmergencyShaker {
                 target.nama = cur.getString(1);
                 target.jumlah_shake = cur.getInt(2);
                 target.telepon = cur.getString(3);
-                target.notif = cur.getString(4);
-                target.sms = cur.getString(5);
-                target.email = cur.getString(6);
+                target.yes_telepon = cur.getInt(4);
+                target.yes_sms = cur.getInt(5);
                 out.add(target);
             }while (cur.moveToNext());
         }
@@ -134,6 +127,12 @@ public class DbEmergencyShaker {
         sql = "DELETE FROM TARGET WHERE nama ='"+xnama+"'";
         db.execSQL(sql);
 
+    }
+
+    public void deleteAllTarget(){
+        String sql;
+        sql = "DELETE FROM TARGET";
+        db.execSQL(sql);
     }
 
     public void updateTarget(String namaNew, String namaOld){
