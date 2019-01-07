@@ -9,28 +9,33 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.Listeners.ShakeDetector;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.UIActivity.MainActivity;
 import com.afina.emergencyshaker.Broadcaster.SensorRestarterBroadcastReceiver;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SensorService extends Service {
     public static boolean isActive=true;
-    public static boolean isBatal =true;
+    public static boolean isBatal = false;
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
-
+    private DbEmergencyShaker db;
     MainActivity activity = MainActivity.instance;
     public Context ctx;
     public int counter=0;
     public SensorService(Context applicationContext) {
         super();
+
         ctx = applicationContext;
+
         Log.i("HERE", "here I am!");
     }
 
@@ -46,7 +51,7 @@ public class SensorService extends Service {
             mShakeDetector = new ShakeDetector();
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-            ShakeListener shakeListener = new ShakeListener(this);
+            ShakeListener shakeListener = new ShakeListener( this);
             mShakeDetector.setOnShakeListener(shakeListener);
 
 

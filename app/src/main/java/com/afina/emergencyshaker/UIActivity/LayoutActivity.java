@@ -111,7 +111,7 @@ public class LayoutActivity extends AppCompatActivity {
                         final AlertDialog alertDialog = new AlertDialog.Builder(LayoutActivity.this).create();
                         alertDialog.setTitle("Perhatian");
                         alertDialog.setMessage("Apakah anda ingin keluar dari aplikasi?");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "YA",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         finish();

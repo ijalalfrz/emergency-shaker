@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
@@ -42,6 +43,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     int condon=3;
     private int shakeCount = 0;
     private CountDownTimer countDownTimer;
+    private DbEmergencyShaker db;
 
     private boolean isNext = false;
     private boolean foundContact = false;
@@ -76,21 +78,11 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
         ctx = this;
-
-
+        db = new DbEmergencyShaker(this);
+        db.open();
 
         listTarget = new ArrayList<>();
-        Target target = new Target();
-        target.jumlah_shake = 10;
-        target.nama = "Polisi";
-        target.telepon = "085703971988";
-        listTarget.add(target);
-        target = new Target();
-        target.jumlah_shake = 15;
-        target.nama = "Cacuk";
-        target.telepon = "085703971988";
-        listTarget.add(target);
-
+        listTarget = db.getAllTarget();
 
         tvCounter = (TextView) findViewById(R.id.tv_counter);
         tvNama = (TextView) findViewById(R.id.tv_nama);
@@ -151,7 +143,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                             dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                             if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                                if(SensorService.isBatal) ctx.startActivity(dialPhoneIntent);
+                                if(!SensorService.isBatal) ctx.startActivity(dialPhoneIntent);
                                 SensorService.isBatal = false;
                                 finish();
                             }

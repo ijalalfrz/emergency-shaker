@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.Service.SensorService;
 import com.afina.emergencyshaker.UIActivity.ConfirmationActivity;
@@ -19,33 +20,36 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
 
     public static final String COUNTER_SHAKE = "counter_shake";
     public static final String EXTRA_COUNT = "extra_count";
-    private ArrayList<Target> listTarget;
-
-    private int index = 0;
+    private static int threshold;
+    private static int jumlahData  = 0;
     private static Context ctx;
-    private int threshold;
+    private static DbEmergencyShaker db;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
-
-        listTarget = new ArrayList<>();
-        Target target = new Target();
-        target.jumlah_shake = 10;
-        target.nama = "Polisi";
-        listTarget.add(target);
-
-        threshold = listTarget.get(index).jumlah_shake;
+        this.db = new DbEmergencyShaker(ctx);
+        db.open();
+        if(db.getAllTarget().size()>0) jumlahData = db.getAllTarget().size();
+        threshold = db.getFirstTarget().jumlah_shake;
+        db.close();
     }
 
     @Override
     public void onShake(int count) {
 
 
-        if(count > 5 && !ConfirmationActivity.isActive && SensorService.isActive){
+        if(count > 5 && jumlahData>0 && !ConfirmationActivity.isActive && SensorService.isActive){
             Intent intent = new Intent(ctx,ConfirmationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
         }
         sendCountBroadcast(count,SensorService.isActive);
+    }
+
+    public static void updateTreshold(){
+        db.open();
+        threshold = db.getFirstTarget().jumlah_shake;
+        jumlahData = db.getAllTarget().size();
+        db.close();
     }
 
     private void sendCountBroadcast(int count,boolean isActive) {

@@ -4,9 +4,14 @@ package com.afina.emergencyshaker.UIFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,29 +29,45 @@ import java.util.ArrayList;
  */
 public class PengaturanFragment extends Fragment {
 
-    DbEmergencyShaker dbMhs;
+    private DbEmergencyShaker dbMhs;
+    private RecyclerView rvTargetList;
+    private Toolbar toolbar;
 
-    RecyclerView rvTargetList;
-    public static ArrayList<Target> targetArrayList;
+    private ListTargetAdapter adapter;
 
-    Button btnAddTarget;
-
-    ListTargetAdapter adapter;
-
-    View view;
+    private View view;
 
     public PengaturanFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.toolbar_pengaturan_menu,menu);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.fragment_pengaturan, container, false);
+
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar_pengaturan);
+        toolbar.setTitle("Daftar Kontak");
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+
         dbMhs = new DbEmergencyShaker(view.getContext());
         dbMhs.open();
+
+        rvTargetList = (RecyclerView)view.findViewById(R.id.rv_list_target);
+        rvTargetList.setHasFixedSize(true);
+
+
         loadData();
         // Inflate the layout for this fragment
         return view;
@@ -61,52 +82,34 @@ public class PengaturanFragment extends Fragment {
         loadData();
     }
 
-    private void showRecyclerList(){
-        rvTargetList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        ListTargetAdapter listTargetAdapter = new ListTargetAdapter(view.getContext());
-        listTargetAdapter.setListTarget(targetArrayList);
-        rvTargetList.setAdapter(listTargetAdapter);
-    }
+
 
     private void loadData(){
 
 
-        adapter = new ListTargetAdapter(view.getContext());
+        adapter = new ListTargetAdapter(view.getContext(), dbMhs);
         ArrayList<Target> arr = new ArrayList<>();
-        arr = dbMhs.getAllTarget();
+        arr = dbMhs.getAllTargetByShake();
         adapter.setListTarget(arr);
 
-        rvTargetList = (RecyclerView)view.findViewById(R.id.rv_list_target);
-        rvTargetList.setHasFixedSize(true);
+        rvTargetList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvTargetList.setAdapter(adapter);
 
-        targetArrayList = new ArrayList<Target>();
 
-        targetArrayList = dbMhs.getAllTarget();
 
-        btnAddTarget = (Button)view.findViewById(R.id.btn_add_target);
-        btnAddTarget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(view.getContext(), AddTargetActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        Button btnHapus = (Button)view.findViewById(R.id.btn_hapus);
-        btnHapus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbMhs.deleteAllTarget();
-                adapter.notifyDataSetChanged();
-
-            }
-        });
-
-        showRecyclerList();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.btn_add_target){
+            Intent intent = new Intent(view.getContext(), AddTargetActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-//
+    //
     @Override
     public void onDestroy() {
         super.onDestroy();

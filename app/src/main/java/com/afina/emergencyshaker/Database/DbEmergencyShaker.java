@@ -35,7 +35,7 @@ public class DbEmergencyShaker {
         newValues.put("TELEPON", target.telepon);
         newValues.put("YES_TELEPON", target.yes_telepon);
         newValues.put("YES_SMS", target.yes_sms);
-        return db.insert("TARGET", null, newValues);
+        return db.insertOrThrow("TARGET", null, newValues);
     }
 
     public long insertStatus(Status st){
@@ -82,11 +82,34 @@ public class DbEmergencyShaker {
         Target target = new Target();
 
         //kolom yang diambil
-        String[] cols = new String[]{"ID","NAMA", "JUMLAH_SHAKE", "TELEPON", "NOTIF", "SMS", "EMAIL"};
+        String[] cols = new String[]{"ID","NAMA", "JUMLAH_SHAKE", "TELEPON", "YES_TELEPON", "YES_SMS"};
         //parameter, akan mengganti ? pada NAMA=?
         String[] param = {nama};
 
         cur = db.query("TARGET",cols,"NAMA=?",param,null,null,null);
+
+        if(cur.getCount()>0){
+            cur.moveToFirst();
+            target.id = cur.getInt(0);
+            target.nama = cur.getString(1);
+            target.jumlah_shake = cur.getInt(2);
+            target.telepon = cur.getString(3);
+            target.yes_telepon = cur.getInt(4);
+            target.yes_sms = cur.getInt(5);
+        }
+        cur.close();
+        return target;
+    }
+
+    public Target getFirstTarget(){
+        Cursor cur = null;
+        Target target = new Target();
+
+        //kolom yang diambil
+        String[] cols = new String[]{"ID","NAMA", "JUMLAH_SHAKE", "TELEPON", "YES_TELEPON", "YES_SMS"};
+        //parameter, akan mengganti ? pada NAMA=?
+
+        cur = db.query("TARGET",cols,null,null,null,null,null,"1");
 
         if(cur.getCount()>0){
             cur.moveToFirst();
@@ -122,9 +145,30 @@ public class DbEmergencyShaker {
         return out;
     }
 
-    public void deleteTarget(String xnama){
+    public ArrayList<Target> getAllTargetByShake(){
+        Cursor cur = null;
+        ArrayList<Target> out = new ArrayList<>();
+
+        cur = db.rawQuery("SELECT * FROM TARGET ORDER BY JUMLAH_SHAKE", null);
+        if(cur.moveToFirst()){
+            do {
+                Target target = new Target();
+                target.id = cur.getInt(0);
+                target.nama = cur.getString(1);
+                target.jumlah_shake = cur.getInt(2);
+                target.telepon = cur.getString(3);
+                target.yes_telepon = cur.getInt(4);
+                target.yes_sms = cur.getInt(5);
+                out.add(target);
+            }while (cur.moveToNext());
+        }
+        cur.close();
+        return out;
+    }
+
+    public void deleteTarget(int xid){
         String sql;
-        sql = "DELETE FROM TARGET WHERE nama ='"+xnama+"'";
+        sql = "DELETE FROM TARGET WHERE ID = "+xid;
         db.execSQL(sql);
 
     }

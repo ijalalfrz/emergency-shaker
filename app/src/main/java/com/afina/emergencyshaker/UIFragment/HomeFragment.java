@@ -104,11 +104,11 @@ public class HomeFragment extends Fragment {
 
     public void setSwitch(){
         if(status){
-            ivSwitch.setImageResource(R.drawable.ic_switch_on);
+            ivSwitch.setImageResource(R.drawable.power_on);
             tvStatus.setText("ON");
             tvStatus.setTextColor(Color.parseColor("#CC1228"));
         }else{
-            ivSwitch.setImageResource(R.drawable.ic_switch_off);
+            ivSwitch.setImageResource(R.drawable.power_off);
             tvStatus.setText("OFF");
             tvStatus.setTextColor(Color.parseColor("#777777"));
         }
@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if(!status){
                     status = true;
-                    ivSwitch.setImageResource(R.drawable.ic_switch_on);
+                    ivSwitch.setImageResource(R.drawable.power_on);
                     tvStatus.setText("ON");
                     tvStatus.setTextColor(Color.parseColor("#CC1228"));
 
@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment {
 
                 }else{
                     status = false;
-                    ivSwitch.setImageResource(R.drawable.ic_switch_off);
+                    ivSwitch.setImageResource(R.drawable.power_off);
                     tvStatus.setText("OFF");
                     tvStatus.setTextColor(Color.parseColor("#777777"));
 

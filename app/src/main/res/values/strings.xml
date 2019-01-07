@@ -12,4 +12,5 @@
     <string name="Tentang">nav_tentang</string>
     <string name="nav_tentang">Tentang</string>
     <string name="nav_keluar">Keluar</string>
+    <string name="add_kontak" />
 </resources>

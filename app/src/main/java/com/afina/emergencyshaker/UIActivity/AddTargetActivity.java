@@ -15,10 +15,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
+import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.UIFragment.PengaturanFragment;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,12 +203,16 @@ public class AddTargetActivity extends AppCompatActivity{
     }
 
     public void insert(){
-        if(dbEmergencyShaker.insertTarget(target) != -1){
+        try{
+            dbEmergencyShaker.insertTarget(target);
             Toast toast = Toast.makeText(getApplicationContext(), target.nama + " berhasil ditambahkan", Toast.LENGTH_SHORT);
             toast.show();
-        }else{
+            ShakeListener.updateTreshold();
+            finish();
+        }catch (Exception e){
             Toast toast = Toast.makeText(getApplicationContext(), target.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);
             toast.show();
+
         }
     }
 
