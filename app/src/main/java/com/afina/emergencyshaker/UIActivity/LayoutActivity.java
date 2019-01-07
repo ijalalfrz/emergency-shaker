@@ -71,6 +71,7 @@ public class LayoutActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        stopService(mServiceIntent);
         dbEmergencyShaker.close();
         super.onDestroy();
 
