@@ -212,8 +212,7 @@ public class AddTargetActivity extends AppCompatActivity{
             ShakeListener.updateTreshold();
             finish();
         }catch (Exception e){
-//            Toast toast = Toast.makeText(getApplicationContext(), target.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);
-            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), target.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);
             toast.show();
 
         }
