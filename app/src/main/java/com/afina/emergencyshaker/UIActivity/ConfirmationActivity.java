@@ -13,13 +13,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
+import com.afina.emergencyshaker.Internet.APIService;
+import com.afina.emergencyshaker.Internet.APIUtils;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
+import com.afina.emergencyshaker.Model.Response;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.Service.SensorService;
@@ -27,6 +31,9 @@ import com.afina.emergencyshaker.Service.SensorService;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ConfirmationActivity extends AppCompatActivity implements View.OnClickListener {
     public static boolean isActive = false;
@@ -47,6 +54,9 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
     private boolean isNext = false;
     private boolean foundContact = false;
+
+    private APIService mAPIService;
+
 
     @Override
     protected void onStart() {
@@ -80,6 +90,9 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         ctx = this;
         db = new DbEmergencyShaker(this);
         db.open();
+
+        mAPIService = APIUtils.getAPIService();
+
 
         listTarget = new ArrayList<>();
         listTarget = db.getAllTarget();
@@ -137,6 +150,10 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         }
 
                         public void onFinish() {
+                            if(temp.yes_sms==1){
+                                String pesan = temp.nama +", Saya dalam situasi emergensi segeralah minta bantuan. Lokasi saya : http://www.google.com/maps/place/"+LayoutActivity.lat+","+LayoutActivity.ln+"";
+                                sendPost(temp.telepon,pesan);
+                            }
 
                             String phoneNumber = temp.telepon;
                             Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
@@ -226,4 +243,23 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
         }
     }
+
+
+    private String userkey = "wbvurq";
+    private String passkey = "g5o7k5hhm7";
+
+    public void sendPost(String nohp,String pesan){
+        mAPIService.sendSMS(userkey,passkey,nohp,pesan).enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response res = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.e("Response fail", t.getMessage());
+            }
+        });
+    }
+
 }

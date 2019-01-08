@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -27,8 +29,16 @@ import com.afina.emergencyshaker.Service.SensorService;
 import com.afina.emergencyshaker.UIFragment.HomeFragment;
 import com.afina.emergencyshaker.UIFragment.PengaturanFragment;
 import com.afina.emergencyshaker.UIFragment.TentangFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class LayoutActivity extends AppCompatActivity {
+public class LayoutActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener {
+    public static double lat;
+    public static double ln;
+
     private BottomNavigationView navBottom;
     private HomeFragment homeFragment;
     private TentangFragment tentangFragment;
@@ -53,6 +63,8 @@ public class LayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout);
         initUI();
+        buildGoogleApiClient();
+        createLocationRequest();
 
         dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
         dbEmergencyShaker.open();
@@ -96,8 +108,15 @@ public class LayoutActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        googleApiClient.connect();
         checkService();
         dbEmergencyShaker.open();
+    }
+
+    @Override
+    protected void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
     }
 
     public void initUI(){
@@ -231,5 +250,61 @@ public class LayoutActivity extends AppCompatActivity {
         }
         dbEmergencyShaker.close();
 
+    }
+
+    //LOCATION THINGS
+
+    private static final int MY_PERMISSIONS_REQUEST = 92;
+    LocationRequest locationRequest;
+    GoogleApiClient googleApiClient;
+    Location lastLocation;
+
+    protected synchronized void buildGoogleApiClient(){
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+    }
+
+    protected void createLocationRequest(){
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+
+    }
+
+    private void ambilLokasi(){
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSIONS_REQUEST);
+
+            return;
+        }
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,this);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        ambilLokasi();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = location.getLatitude();
+        ln = location.getLongitude();
     }
 }
