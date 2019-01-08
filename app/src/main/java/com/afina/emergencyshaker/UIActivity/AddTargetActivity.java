@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,6 +47,22 @@ public class AddTargetActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_target);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_add);
+        setSupportActionBar(toolbar);
+        setTitle("Tambah Kontak");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+
+            }
+        });
+
         dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
         dbEmergencyShaker.open();
         loadData();

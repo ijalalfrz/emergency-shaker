@@ -6,11 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".UIActivity.EditTargetActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar_edit">
+    </android.support.v7.widget.Toolbar>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="left"
+        android:layout_below="@+id/toolbar_edit"
         android:layout_margin="@dimen/activity_vertical_margin">
 
         <LinearLayout
