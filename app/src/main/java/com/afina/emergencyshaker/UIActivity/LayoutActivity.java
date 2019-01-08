@@ -2,6 +2,7 @@ package com.afina.emergencyshaker.UIActivity;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -187,6 +188,7 @@ public class LayoutActivity extends AppCompatActivity {
         dbEmergencyShaker.close();
         if(stat != null){
             if(stat.status == 1){
+                SensorService.isActive = true;
                 if(!isMyServiceRunning(SensorService.class)){
                     startService(mServiceIntent);
                 }

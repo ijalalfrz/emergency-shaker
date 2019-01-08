@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SensorService extends Service {
+    public static boolean isActiveConfirm = false;
     public static boolean isActive=true;
     public static boolean isBatal = false;
 

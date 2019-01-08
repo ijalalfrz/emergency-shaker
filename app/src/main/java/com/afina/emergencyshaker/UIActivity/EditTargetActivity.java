@@ -217,7 +217,6 @@ public class EditTargetActivity extends AppCompatActivity {
             dbEmergencyShaker.updateTarget(targetUpdate, id);
             Toast toast = Toast.makeText(getApplicationContext(), targetUpdate.nama + " berhasil diubah", Toast.LENGTH_SHORT);
             toast.show();
-            ShakeListener.updateTreshold();
             finish();
         }catch (Exception e){
 //            Toast toast = Toast.makeText(getApplicationContext(), targetUpdate.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);

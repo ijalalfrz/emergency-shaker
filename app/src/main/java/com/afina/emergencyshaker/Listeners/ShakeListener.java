@@ -26,18 +26,17 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
     private static DbEmergencyShaker db;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
-//        this.db = new DbEmergencyShaker(ctx);
-//        db.open();
-//        if(db.getAllTarget().size()>0) jumlahData = db.getAllTarget().size();
-//        threshold = db.getFirstTarget().jumlah_shake;
-//        db.close();
+        this.db = new DbEmergencyShaker(ctx);
+        db.open();
+        if(db.getAllTarget().size()>0) jumlahData = db.getAllTarget().size();
+        db.close();
     }
 
     @Override
     public void onShake(int count) {
 
 
-        if(count > 5 && jumlahData>0 && !ConfirmationActivity.isActive && SensorService.isActive){
+        if(count > 5 && jumlahData>0 && !SensorService.isActiveConfirm&& SensorService.isActive){
             Intent intent = new Intent(ctx,ConfirmationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctx.startActivity(intent);
@@ -46,10 +45,10 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
     }
 
     public static void updateTreshold(){
-        db.open();
-        threshold = db.getFirstTarget().jumlah_shake;
-        jumlahData = db.getAllTarget().size();
-        db.close();
+//        db.open();
+//        threshold = db.getFirstTarget().jumlah_shake;
+//        jumlahData = db.getAllTarget().size();
+//        db.close();
     }
 
     private void sendCountBroadcast(int count,boolean isActive) {

@@ -8,8 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.Toolbar
-        android:background="@color/colorSecondary"
-        app:titleTextColor="#FFFFFF"
+        android:background="#999999"
+        app:titleTextColor="#ffffff"
         android:elevation="2dp"
         android:id="@+id/toolbar_pengaturan"
         android:layout_width="match_parent"
