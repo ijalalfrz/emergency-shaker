@@ -22,7 +22,8 @@
 
         <service
             android:name=".Service.SensorService"
-            android:enabled="true" />
+            android:stopWithTask="false"
+            android:enabled="true"/>
 
         <receiver
             android:name=".Broadcaster.SensorRestarterBroadcastReceiver"

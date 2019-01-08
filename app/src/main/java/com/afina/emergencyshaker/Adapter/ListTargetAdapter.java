@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
@@ -59,8 +61,12 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
         final Target data = getListTarget().get(position);
 
         holder.tvNamaTarget.setText(data.getNama());
-        holder.tvType.setText(data.jumlah_shake + " Shake");
-        holder.tvTelepon.setText(data.telepon);
+        holder.tvType.setText("Jumlah Shake: "+data.jumlah_shake);
+        holder.tvTelepon.setText("Telp: "+data.telepon);
+        if(data.yes_sms != 1){
+            holder.ivSms.setVisibility(View.GONE);
+        }
+
         holder.btnHapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +121,7 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
     class CategoryViewHolder extends RecyclerView.ViewHolder{
         TextView tvNamaTarget,tvType,tvTelepon;
         Button btnEdit,btnHapus;
+        ImageView ivSms,ivTelepon;
 //        Button btnAddTarget;
 
         CategoryViewHolder(View itemView) {
@@ -124,6 +131,8 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
             tvTelepon = (TextView) itemView.findViewById(R.id.tv_no_telepon);
             btnEdit = (Button) itemView.findViewById(R.id.btn_edit);
             btnHapus = (Button) itemView.findViewById(R.id.btn_hapus);
+            ivSms = (ImageView) itemView.findViewById(R.id.is_sms);
+            ivTelepon = (ImageView) itemView.findViewById(R.id.is_telepon);
 //            btnAddTarget = (Button)itemView.findViewById(R.id.btn_add_target);
         }
     }

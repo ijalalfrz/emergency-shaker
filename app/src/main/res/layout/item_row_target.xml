@@ -44,33 +44,74 @@
                 android:layout_height="wrap_content"
                 android:text="No Telepon"/>
             <LinearLayout
-                android:layout_marginTop="@dimen/padding"
+                android:layout_marginTop="@dimen/margin"
                 android:layout_gravity="right"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+
                 android:layout_height="wrap_content">
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_edit"
-                    android:minHeight="30dp"
-                    android:minWidth="70dp"
-                    android:background="#80FFFFFF"
-                    android:textColor="@color/colorSecondary"
-                    style="@style/ButtonEffect"
-                    android:text="UBAH"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_hapus"
-                    android:minHeight="30dp"
-                    android:minWidth="70dp"
-                    android:background="#80FFFFFF"
-                    android:textColor="@color/colorSecondary"
-                    style="@style/ButtonEffect"
-                    android:gravity="center"
-                    android:text="HAPUS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/is_telepon"
+                        android:background="@drawable/ic_telepon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+
+                    <ImageView
+                        android:id="@+id/is_sms"
+                        android:layout_marginLeft="@dimen/padding"
+                        android:background="@drawable/ic_sms"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <android.support.v7.widget.AppCompatButton
+
+                            android:id="@+id/btn_edit"
+                            android:layout_toLeftOf="@id/btn_hapus"
+                            style="@style/ButtonEffect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#80FFFFFF"
+                            android:gravity="center"
+                            android:minWidth="70dp"
+                            android:minHeight="30dp"
+                            android:text="UBAH"
+                            android:textColor="@color/colorSecondary" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_hapus"
+                            style="@style/ButtonEffect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="0dp"
+                            android:layout_alignParentRight="true"
+                            android:background="#80FFFFFF"
+                            android:gravity="center"
+                            android:minWidth="70dp"
+                            android:minHeight="30dp"
+                            android:text="HAPUS"
+                            android:textColor="@color/colorSecondary" />
+                    </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

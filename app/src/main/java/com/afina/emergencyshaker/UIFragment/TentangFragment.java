@@ -31,11 +31,7 @@ public class TentangFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tentang, container, false);
 
-        String deskripsi = "<b>Emergency Shaker</b> merupakan aplikasi yang dapat membantumu dalam kondisi darurat. " +
-                "<br> Perlu bantuan polisi? Ambulans? Atau kerabat terdekat? <br><b>Emergency Shaker</b> akan membantumu menghubungi mereka dengan lebih cepat!";
-
         tvDeskripsi = (TextView)view.findViewById(R.id.tv_deskripsi);
-        tvDeskripsi.setText(Html.fromHtml(deskripsi));
 
         return view;
     }

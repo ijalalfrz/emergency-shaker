@@ -1,11 +1,15 @@
 package com.afina.emergencyshaker.Service;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -46,13 +50,13 @@ public class SensorService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            mShakeDetector = new ShakeDetector();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
 
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-            ShakeListener shakeListener = new ShakeListener( this);
-            mShakeDetector.setOnShakeListener(shakeListener);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        ShakeListener shakeListener = new ShakeListener( this);
+        mShakeDetector.setOnShakeListener(shakeListener);
 
 
         startTimer();
@@ -62,14 +66,36 @@ public class SensorService extends Service {
     @Override
     public void onDestroy() {
         Log.i("EXIT", "ondestroy!");
-        mSensorManager.unregisterListener(mShakeDetector);
         Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);
         if(isActive){
             sendBroadcast(broadcastIntent);
+
+
+            Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+            restartServiceIntent.setPackage(getPackageName());
+            PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent,PendingIntent.FLAG_ONE_SHOT);
+            AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+            alarmService.set(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + 1000,restartServicePendingIntent);
+        }else{
+            mSensorManager.unregisterListener(mShakeDetector);
         }
         stoptimertask();
         super.onDestroy();
 
+
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.i("TASKREMOVED", "TRUE!");
+        Log.e("FLAGX : ", ServiceInfo.FLAG_STOP_WITH_TASK + "");
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
+
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent,PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + 1000,restartServicePendingIntent);
+        super.onTaskRemoved(rootIntent);
 
     }
 

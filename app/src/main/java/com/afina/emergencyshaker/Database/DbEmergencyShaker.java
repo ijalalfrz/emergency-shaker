@@ -21,11 +21,15 @@ public class DbEmergencyShaker {
     }
 
     public void open(){
-        db = dbHelper.getWritableDatabase();
+        if(db == null || !db.isOpen()){
+            db = dbHelper.getWritableDatabase();
+        }
     }
 
     public void close(){
-        db.close();
+        if(db.isOpen()){
+            db.close();
+        }
     }
 
     public long insertTarget(Target target){

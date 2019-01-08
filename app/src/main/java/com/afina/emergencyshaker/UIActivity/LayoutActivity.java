@@ -53,7 +53,6 @@ public class LayoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_layout);
         initUI();
 
-
         dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
         dbEmergencyShaker.open();
         ctx = this;
@@ -72,14 +71,33 @@ public class LayoutActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.i("INFOOO","DESTROYED");
         stopService(mServiceIntent);
+
         dbEmergencyShaker.close();
 
         super.onDestroy();
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dbEmergencyShaker.close();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkService();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkService();
+        dbEmergencyShaker.open();
+    }
 
     public void initUI(){
         homeFragment = new HomeFragment();
@@ -166,6 +184,7 @@ public class LayoutActivity extends AppCompatActivity {
     public void checkService(){
         dbEmergencyShaker.open();
         stat = dbEmergencyShaker.getLastStatus();
+        dbEmergencyShaker.close();
         if(stat != null){
             if(stat.status == 1){
                 if(!isMyServiceRunning(SensorService.class)){
@@ -179,7 +198,7 @@ public class LayoutActivity extends AppCompatActivity {
         dbEmergencyShaker.open();
 
         stat = dbEmergencyShaker.getLastStatus();
-
+        dbEmergencyShaker.close();
         if(stat != null){
             if(stat.status == 1){
                 return true;
@@ -193,6 +212,7 @@ public class LayoutActivity extends AppCompatActivity {
 
 
     public void setStatusService(boolean setting){
+        dbEmergencyShaker.open();
         Status st = new Status();
         if(setting){
             st.status = 1;
@@ -207,6 +227,7 @@ public class LayoutActivity extends AppCompatActivity {
             SensorService.isActive = false;
             dbEmergencyShaker.insertStatus(st);
         }
+        dbEmergencyShaker.close();
 
     }
 }

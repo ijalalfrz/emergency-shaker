@@ -79,12 +79,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="36" />
-                            <entry key="outputName" value="ic_add" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\MAMEN" />
-                            <entry key="width" value="36" />
+                            <entry key="outputName" value="ic_telepon" />
+                            <entry key="sourceFile" value="F:\AKADEMIS\UNIVERSITI\SEMESTER 5\MOBPROG\TUBES MOBPRO\phone-call.svg" />
                           </map>
                         </option>
                       </PersistentState>
