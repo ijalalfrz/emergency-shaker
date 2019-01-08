@@ -11,6 +11,15 @@ public class Target implements Parcelable {
     public String telepon;
     public int yes_telepon;
     public int yes_sms;
+    public String jenis;
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public int getYes_telepon() {
         return yes_telepon;
@@ -64,10 +73,6 @@ public class Target implements Parcelable {
     }
 
 
-
-
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -81,6 +86,7 @@ public class Target implements Parcelable {
         dest.writeString(this.telepon);
         dest.writeInt(this.yes_telepon);
         dest.writeInt(this.yes_sms);
+        dest.writeString(this.jenis);
     }
 
     protected Target(Parcel in) {
@@ -90,6 +96,7 @@ public class Target implements Parcelable {
         this.telepon = in.readString();
         this.yes_telepon = in.readInt();
         this.yes_sms = in.readInt();
+        this.jenis = in.readString();
     }
 
     public static final Creator<Target> CREATOR = new Creator<Target>() {

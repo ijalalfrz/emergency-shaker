@@ -1,7 +1,6 @@
 package com.afina.emergencyshaker.UIActivity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,92 +12,108 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.Listeners.ShakeListener;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
-import com.afina.emergencyshaker.UIFragment.PengaturanFragment;
 
-import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddTargetActivity extends AppCompatActivity{
-    Button btnAdd;
-    EditText etNama,etJumlahShake,etTelepon,etNotif,etSms,etEmail;
+public class EditTargetActivity extends AppCompatActivity {
     DbEmergencyShaker dbEmergencyShaker;
+    public static int EXTRA_ID = 0;
+
+    LinearLayout layoutPlusEdit;
 
     Spinner spJenis;
-
-    ArrayList<Target> arrTarget;
-    Target target;
-
-    CheckBox cbTelepon, cbSms;
-
-    PengaturanFragment pengaturanFragment;
-
     String item;
 
-    LinearLayout layoutPlus;
+    Button btnUpdate;
+
+    Target target, targetUpdate;
+
+    EditText etNama, etTelepon, etJumlahShake;
+    CheckBox cbTelepon, cbSms;
+
+    int id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_target);
+        setContentView(R.layout.activity_edit_target);
+
         dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
         dbEmergencyShaker.open();
-        loadData();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        dbEmergencyShaker = new DbEmergencyShaker(getApplicationContext());
-        dbEmergencyShaker.open();
-        loadData();
-    }
-
-    public void loadData(){
-        spJenis = (Spinner)findViewById(R.id.sp_jenis);
-        arrTarget = new ArrayList<>();
 
 
-        layoutPlus = (LinearLayout)findViewById(R.id.layoutPlus);
+        id = getIntent().getIntExtra("EXTRA_ID", EXTRA_ID);
+        target = new Target();
+        target = dbEmergencyShaker.getTarget(id);
 
+        etNama = (EditText)findViewById(R.id.et_nama_edit);
+        etNama.setText(target.nama);
+        etNama.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
+
+        etJumlahShake = (EditText)findViewById(R.id.et_jumlah_shake_edit);
+        etJumlahShake.setText(String.valueOf(target.jumlah_shake));
+
+        etTelepon = (EditText)findViewById(R.id.et_no_telp_edit);
+        etTelepon.setText(target.telepon);
+
+        cbTelepon = (CheckBox)findViewById(R.id.cb_telepon_edit);
+        if (target.yes_telepon == 1){
+            cbTelepon.setChecked(true);
+        }
+
+        cbSms = (CheckBox)findViewById(R.id.cb_sms_edit);
+        if (target.yes_sms == 1){
+            cbSms.setChecked(true);
+        }
+
+        btnUpdate = (Button)findViewById(R.id.btn_update);
+
+        layoutPlusEdit = (LinearLayout)findViewById(R.id.layoutPlusEdit);
+
+        spJenis = (Spinner)findViewById(R.id.sp_jenis_edit);
         List<String> categories = new ArrayList<String>();
         categories.add("Polisi");
         categories.add("Ambulans");
         categories.add("Pemadam Kebakaran");
         categories.add("Lainnya");
 
-        etJumlahShake = (EditText)findViewById(R.id.et_jumlah_shake);
-        etTelepon = (EditText)findViewById(R.id.et_no_telp);
-        etNama = (EditText)findViewById(R.id.et_nama);
-        etNama.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-
-        cbTelepon = (CheckBox)findViewById(R.id.cb_telepon);
-        cbSms = (CheckBox)findViewById(R.id.cb_sms);
-//        etSms = (EditText)findViewById(R.id.et_sms);
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spJenis.setAdapter(dataAdapter);
 
+        int a = 0;
+        for (String data: categories){
+            if (target.jenis.equals(data)){
+                spJenis.setSelection(a);
+            }
+            a++;
+        }
+
+
+        if (!target.jenis.equals("Lainnya")){
+            layoutPlusEdit.setVisibility(View.INVISIBLE);
+
+        }else {
+            layoutPlusEdit.setVisibility(View.VISIBLE);
+        }
 
         spJenis.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // Your code here
 
 
                 item = adapterView.getItemAtPosition(i).toString();
-//                Toast toast = Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT);
-//                toast.show();
 
                 if (!item.equals("Lainnya")){
-                    layoutPlus.setVisibility(View.INVISIBLE);
-
+                    layoutPlusEdit.setVisibility(View.INVISIBLE);
                     if (item.equals("Polisi")){
                         etTelepon.setText("110");
                         etNama.setText("Polisi");
@@ -109,16 +124,21 @@ public class AddTargetActivity extends AppCompatActivity{
                         etTelepon.setText("113");
                         etNama.setText("Pemadam Kebakaran");
                     }
-
                 }else{
-                    etTelepon.setText("");
-                    etNama.setText("");
-                    layoutPlus.setVisibility(View.VISIBLE);
 
+                    if (!target.jenis.equals("Lainnya")){
+                        etTelepon.setText("");
+                        etNama.setText("");
+                        cbTelepon.setChecked(false);
+                    }else{
+                        etTelepon.setText(target.telepon);
+                        etNama.setText(target.nama);
+                    }
 
-
+                    layoutPlusEdit.setVisibility(View.VISIBLE);
 
                 }
+
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -126,30 +146,26 @@ public class AddTargetActivity extends AppCompatActivity{
             }
         });
 
-
-
-
-        btnAdd = (Button)findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 try{
-                    target = new Target();
-                    target.nama = etNama.getText().toString();
-                    target.jumlah_shake = Integer.parseInt((etJumlahShake.getText().toString()));
-                    target.telepon = etTelepon.getText().toString();
-                    target.yes_telepon = 0;
-                    target.yes_sms = 0;
-                    target.jenis = item;
-                    ArrayList<Target> arr = new ArrayList<>();
+                    targetUpdate = new Target();
+                    targetUpdate.nama = etNama.getText().toString();
+                    targetUpdate.jumlah_shake = Integer.parseInt((etJumlahShake.getText().toString()));
+                    targetUpdate.telepon = etTelepon.getText().toString();
+                    targetUpdate.yes_telepon = 0;
+                    targetUpdate.yes_sms = 0;
+                    targetUpdate.jenis = item;
+                    ArrayList<Target> arr;
                     arr = dbEmergencyShaker.getAllTarget();
                     int stat = 1;
                     String nama = "";
 
                     for (Target data: arr){
-                        if (data.jumlah_shake == target.jumlah_shake){
+                        if (data.jumlah_shake == targetUpdate.jumlah_shake && data.id != id){
                             stat = 0;
                             nama = data.nama;
                         }
@@ -161,37 +177,37 @@ public class AddTargetActivity extends AppCompatActivity{
                             toast.show();
                         }else if ((cbTelepon.isChecked() && cbSms.isChecked()) || (cbTelepon.isChecked() || cbSms.isChecked())){
                             if (cbSms.isChecked()){
-                                target.yes_sms = 1;
+                                targetUpdate.yes_sms = 1;
                             }
                             if (cbTelepon.isChecked()){
-                                target.yes_telepon = 1;
+                                targetUpdate.yes_telepon = 1;
                             }
 
 
 
-                            if (target.jumlah_shake == 5){
+                            if (targetUpdate.jumlah_shake == 5){
                                 Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }else if (stat == 0){
-                                Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + target.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + targetUpdate.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
                                 toast.show();
                             }else{
 
-                                insert();
+                                update();
 
                             }
                         }
                     }else{
-                        target.yes_telepon = 1;
-                        if (target.jumlah_shake <= 5){
+                        targetUpdate.yes_telepon = 1;
+                        if (targetUpdate.jumlah_shake <= 5){
                             Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
                             toast.show();
                         }else if (stat == 0){
-                            Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + target.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + targetUpdate.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
                             toast.show();
                         }else{
 
-                            insert();
+                            update();
 
                         }
                     }
@@ -203,26 +219,18 @@ public class AddTargetActivity extends AppCompatActivity{
             }
         });
     }
-
-    public void insert(){
+    public void update(){
         try{
-            dbEmergencyShaker.insertTarget(target);
-            Toast toast = Toast.makeText(getApplicationContext(), target.nama + " berhasil ditambahkan", Toast.LENGTH_SHORT);
+            dbEmergencyShaker.updateTarget(targetUpdate, id);
+            Toast toast = Toast.makeText(getApplicationContext(), targetUpdate.nama + " berhasil diubah", Toast.LENGTH_SHORT);
             toast.show();
             ShakeListener.updateTreshold();
             finish();
         }catch (Exception e){
-//            Toast toast = Toast.makeText(getApplicationContext(), target.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);
+//            Toast toast = Toast.makeText(getApplicationContext(), targetUpdate.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);
             Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
 
         }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbEmergencyShaker.close();
     }
 }

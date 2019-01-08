@@ -52,18 +52,22 @@
             android:background="@color/colorSoft"
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
+
         <android.support.v7.widget.AppCompatButton
-            android:paddingLeft="16dp"
-            android:background="#80FFFFFF"
+            android:id="@+id/btn_how_to"
             style="@style/ButtonEffect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cara menggunakan"/>
+            android:background="#80FFFFFF"
+            android:paddingLeft="16dp"
+            android:text="Cara menggunakan" />
+
         <View
             android:background="@color/colorSoft"
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_about_dev"
             android:paddingLeft="16dp"
             android:background="#80FFFFFF"
             style="@style/ButtonEffect"
