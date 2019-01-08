@@ -226,7 +226,6 @@ public class AddTargetActivity extends AppCompatActivity{
             dbEmergencyShaker.insertTarget(target);
             Toast toast = Toast.makeText(getApplicationContext(), target.nama + " berhasil ditambahkan", Toast.LENGTH_SHORT);
             toast.show();
-            ShakeListener.updateTreshold();
             finish();
         }catch (Exception e){
             Toast toast = Toast.makeText(getApplicationContext(), target.nama + " gagal ditambahkan", Toast.LENGTH_SHORT);

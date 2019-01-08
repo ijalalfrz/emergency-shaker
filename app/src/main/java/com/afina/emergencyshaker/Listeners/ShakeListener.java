@@ -26,11 +26,11 @@ public class ShakeListener implements ShakeDetector.OnShakeListener {
     private static DbEmergencyShaker db;
     public ShakeListener(Context ctx) {
         this.ctx = ctx;
-        this.db = new DbEmergencyShaker(ctx);
-        db.open();
-        if(db.getAllTarget().size()>0) jumlahData = db.getAllTarget().size();
-        threshold = db.getFirstTarget().jumlah_shake;
-        db.close();
+//        this.db = new DbEmergencyShaker(ctx);
+//        db.open();
+//        if(db.getAllTarget().size()>0) jumlahData = db.getAllTarget().size();
+//        threshold = db.getFirstTarget().jumlah_shake;
+//        db.close();
     }
 
     @Override

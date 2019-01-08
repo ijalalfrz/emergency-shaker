@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,14 +60,20 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
         return new CategoryViewHolder(itemRow);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, final int position) {
         final Target data = getListTarget().get(position);
 
         holder.tvNamaTarget.setText(data.getNama());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.tvType.setText(Html.fromHtml("<b>Shake:</b> "+data.jumlah_shake, Html.FROM_HTML_MODE_COMPACT));
+            holder.tvTelepon.setText(Html.fromHtml("<b>Telpon:</b> \"+data.telepon", Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.tvType.setText(Html.fromHtml("<b>Shake:</b> "+data.jumlah_shake ));
+            holder.tvTelepon.setText(Html.fromHtml("<b>Telpon:</b> "+data.telepon));
+        }
 
-        holder.tvType.setText("Jumlah Shake: "+data.jumlah_shake);
-        holder.tvTelepon.setText("Telp: "+data.telepon);
         if(data.yes_sms != 1){
             holder.ivSms.setVisibility(View.GONE);
         }

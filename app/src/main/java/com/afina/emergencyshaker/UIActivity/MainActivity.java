@@ -143,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
                     Status st = new Status();
                     st.status = 1;
+                    SensorService.isActive = true;
+
 
                     if (dbEmergencyShaker.getLastStatus() != null){
                         dbEmergencyShaker.insertStatus(st);
@@ -168,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
+                dbEmergencyShaker.close();
+
             }
         });
 
