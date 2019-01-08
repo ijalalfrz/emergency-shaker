@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UIActivity.AddTargetActivity">
+    tools:context=".UIActivity.EditTargetActivity">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar_add">
+        android:id="@+id/toolbar_edit">
     </android.support.v7.widget.Toolbar>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="left"
-        android:layout_below="@+id/toolbar_add"
+        android:layout_below="@+id/toolbar_edit"
         android:layout_margin="@dimen/activity_vertical_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/layoutTarget">
+            android:id="@+id/layoutTargetEdit">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,12 +35,12 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/sp_jenis">
+                android:id="@+id/sp_jenis_edit">
 
             </Spinner>
 
+
             <TextView
-                android:id="@+id/tv_add_nama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nama" />
@@ -47,20 +48,18 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/et_nama"/>
+                android:id="@+id/et_nama_edit"/>
 
             <TextView
-                android:id="@+id/tv_add_jumlah_shake"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jumlah Shake" />
 
             <EditText
-                android:id="@+id/et_jumlah_shake"
+                android:id="@+id/et_jumlah_shake_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
-
 
         </LinearLayout>
 
@@ -68,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/layoutPlus">
+            android:id="@+id/layoutPlusEdit">
 
             <TextView
                 android:layout_width="match_parent"
@@ -76,7 +75,7 @@
                 android:text="Nomor Telepon"/>
 
             <EditText
-                android:id="@+id/et_no_telp"
+                android:id="@+id/et_no_telp_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"/>
@@ -90,31 +89,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Panggil melalui telepon"
-                android:id="@+id/cb_telepon"/>
+                android:id="@+id/cb_telepon_edit"/>
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Kirim SMS"
-                android:id="@+id/cb_sms"/>
-
-
+                android:id="@+id/cb_sms_edit"/>
 
         </LinearLayout>
 
-
-
-
     </LinearLayout>
-
-
 
     <android.support.v7.widget.AppCompatButton
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:background="#94050d"
         android:textColor="#ffffff"
-        android:id="@+id/btn_add"
+        android:id="@+id/btn_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"

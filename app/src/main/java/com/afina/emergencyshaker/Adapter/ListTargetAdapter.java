@@ -18,6 +18,7 @@ import com.afina.emergencyshaker.Database.DbEmergencyShaker;
 import com.afina.emergencyshaker.Model.Target;
 import com.afina.emergencyshaker.R;
 import com.afina.emergencyshaker.UIActivity.AddTargetActivity;
+import com.afina.emergencyshaker.UIActivity.EditTargetActivity;
 import com.afina.emergencyshaker.UIActivity.LayoutActivity;
 
 import java.util.ArrayList;
@@ -61,12 +62,23 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
         final Target data = getListTarget().get(position);
 
         holder.tvNamaTarget.setText(data.getNama());
+
         holder.tvType.setText("Jumlah Shake: "+data.jumlah_shake);
         holder.tvTelepon.setText("Telp: "+data.telepon);
         if(data.yes_sms != 1){
             holder.ivSms.setVisibility(View.GONE);
         }
 
+
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                Intent moveIntent = new Intent(context, EditTargetActivity.class);
+                moveIntent.putExtra("EXTRA_ID", data.id);
+                context.startActivity(moveIntent);
+            }
+        });
         holder.btnHapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,15 +114,6 @@ public class ListTargetAdapter extends RecyclerView.Adapter<ListTargetAdapter.Ca
             }
         });
 
-//        holder.btnAddTarget.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, AddTargetActivity.class);
-////                intent.putExtra("nama", mhs.getNama());
-////                intent.putExtra("telepon", mhs.getTelepon());
-//                context.startActivity(intent);
-//            }
-//        });
     }
 
     @Override
