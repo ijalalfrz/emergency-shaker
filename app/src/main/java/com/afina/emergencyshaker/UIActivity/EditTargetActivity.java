@@ -130,13 +130,19 @@ public class EditTargetActivity extends AppCompatActivity {
                     layoutPlusEdit.setVisibility(View.INVISIBLE);
                     if (item.equals("Polisi")){
                         etTelepon.setText("110");
-                        etNama.setText("Polisi");
+                        if (!item.equals(target.jenis)){
+                            etNama.setText(target.toString());
+                        }
                     }else if (item.equals("Ambulans")){
                         etTelepon.setText("118");
-                        etNama.setText("Ambulans");
+                        if (!item.equals(target.jenis)){
+                            etNama.setText(target.toString());
+                        }
                     }else if (item.equals("Pemadam Kebakaran")){
                         etTelepon.setText("113");
-                        etNama.setText("Pemadam Kebakaran");
+                        if (!item.equals(target.jenis)){
+                            etNama.setText(target.toString());
+                        }
                     }
                 }else{
 
