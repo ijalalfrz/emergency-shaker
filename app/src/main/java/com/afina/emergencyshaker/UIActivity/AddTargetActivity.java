@@ -36,7 +36,7 @@ public class AddTargetActivity extends AppCompatActivity{
     ArrayList<Target> arrTarget;
     Target target;
 
-    CheckBox cbTelepon, cbSms;
+    CheckBox cbSms;
 
     PengaturanFragment pengaturanFragment;
 

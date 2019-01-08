@@ -38,7 +38,7 @@ public class EditTargetActivity extends AppCompatActivity {
     Target target, targetUpdate;
 
     EditText etNama, etTelepon, etJumlahShake;
-    CheckBox cbTelepon, cbSms;
+    CheckBox cbSms;
     ArrayList<Target> arr;
 
     int id;
@@ -131,17 +131,23 @@ public class EditTargetActivity extends AppCompatActivity {
                     if (item.equals("Polisi")){
                         etTelepon.setText("110");
                         if (!item.equals(target.jenis)){
-                            etNama.setText(target.toString());
+                            etNama.setText(item.toString());
+                        }else{
+                            etNama.setText(target.nama);
                         }
                     }else if (item.equals("Ambulans")){
                         etTelepon.setText("118");
                         if (!item.equals(target.jenis)){
-                            etNama.setText(target.toString());
+                            etNama.setText(item.toString());
+                        }else{
+                            etNama.setText(target.nama);
                         }
                     }else if (item.equals("Pemadam Kebakaran")){
                         etTelepon.setText("113");
                         if (!item.equals(target.jenis)){
-                            etNama.setText(target.toString());
+                            etNama.setText(item.toString());
+                        }else{
+                            etNama.setText(target.nama);
                         }
                     }
                 }else{
@@ -149,7 +155,6 @@ public class EditTargetActivity extends AppCompatActivity {
                     if (!target.jenis.equals("Lainnya")){
                         etTelepon.setText("");
                         etNama.setText("");
-                        cbTelepon.setChecked(false);
                     }else{
                         etTelepon.setText(target.telepon);
                         etNama.setText(target.nama);
