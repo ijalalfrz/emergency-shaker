@@ -39,6 +39,7 @@ public class EditTargetActivity extends AppCompatActivity {
 
     EditText etNama, etTelepon, etJumlahShake;
     CheckBox cbTelepon, cbSms;
+    ArrayList<Target> arr;
 
     int id;
 
@@ -82,10 +83,6 @@ public class EditTargetActivity extends AppCompatActivity {
         etTelepon = (EditText)findViewById(R.id.et_no_telp_edit);
         etTelepon.setText(target.telepon);
 
-        cbTelepon = (CheckBox)findViewById(R.id.cb_telepon_edit);
-        if (target.yes_telepon == 1){
-            cbTelepon.setChecked(true);
-        }
 
         cbSms = (CheckBox)findViewById(R.id.cb_sms_edit);
         if (target.yes_sms == 1){
@@ -162,6 +159,8 @@ public class EditTargetActivity extends AppCompatActivity {
                 return;
             }
         });
+        arr = new ArrayList<>();
+        arr = dbEmergencyShaker.getAllTarget();
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,11 +172,9 @@ public class EditTargetActivity extends AppCompatActivity {
                     targetUpdate.nama = etNama.getText().toString();
                     targetUpdate.jumlah_shake = Integer.parseInt((etJumlahShake.getText().toString()));
                     targetUpdate.telepon = etTelepon.getText().toString();
-                    targetUpdate.yes_telepon = 0;
+                    targetUpdate.yes_telepon = 1;
                     targetUpdate.yes_sms = 0;
                     targetUpdate.jenis = item;
-                    ArrayList<Target> arr;
-                    arr = dbEmergencyShaker.getAllTarget();
                     int stat = 1;
                     String nama = "";
 
@@ -189,45 +186,24 @@ public class EditTargetActivity extends AppCompatActivity {
                     }
 
                     if (item.equals("Lainnya")){
-                        if (!cbTelepon.isChecked() && !cbSms.isChecked()){
-                            Toast toast = Toast.makeText(getApplicationContext(), "Mohon memilih salah satu metode pemanggilan.", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }else if ((cbTelepon.isChecked() && cbSms.isChecked()) || (cbTelepon.isChecked() || cbSms.isChecked())){
-                            if (cbSms.isChecked()){
-                                targetUpdate.yes_sms = 1;
-                            }
-                            if (cbTelepon.isChecked()){
-                                targetUpdate.yes_telepon = 1;
-                            }
-
-
-
-                            if (targetUpdate.jumlah_shake == 5){
-                                Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
-                                toast.show();
-                            }else if (stat == 0){
-                                Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + targetUpdate.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
-                                toast.show();
-                            }else{
-
-                                update();
-
-                            }
+                        if (cbSms.isChecked()){
+                            targetUpdate.yes_sms = 1;
                         }
-                    }else{
-                        targetUpdate.yes_telepon = 1;
-                        if (targetUpdate.jumlah_shake <= 5){
-                            Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }else if (stat == 0){
-                            Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + targetUpdate.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
-                            toast.show();
-                        }else{
 
-                            update();
 
-                        }
                     }
+                    if (targetUpdate.jumlah_shake <= 5){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake harus lebh dari 5 kali.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else if (stat == 0){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Jumlah shake sebanyak " + targetUpdate.jumlah_shake + " sudah dipakai oleh " + nama, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else{
+
+                        update();
+
+                    }
+
                 }
                 catch (Exception e){
                     Toast toast = Toast.makeText(getApplicationContext(), "Mohon mengisi data dengan benar.", Toast.LENGTH_SHORT);

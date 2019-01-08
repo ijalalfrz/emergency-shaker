@@ -80,21 +80,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Metode"/>
-
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Panggil melalui telepon"
-                android:id="@+id/cb_telepon_edit"/>
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Kirim SMS"
+                android:text="Kirim SMS Lokasi"
                 android:id="@+id/cb_sms_edit"/>
 
         </LinearLayout>
