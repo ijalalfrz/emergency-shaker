@@ -79,6 +79,7 @@ public class PengaturanFragment extends Fragment {
         super.onResume();
         dbMhs = new DbEmergencyShaker(view.getContext());
         dbMhs.open();
+        
         loadData();
     }
 
