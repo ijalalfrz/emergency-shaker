@@ -5,6 +5,8 @@
     <color name="colorAccent">#777777</color>
     <color name="colorSoft">#bbbbbb</color>
     <color name="colorSecondary">#c62437</color>
+    <color name="colorDark">#444444</color>
+
 
 
 </resources>

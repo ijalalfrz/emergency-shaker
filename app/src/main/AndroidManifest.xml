@@ -3,8 +3,8 @@
     package="com.afina.emergencyshaker">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/ShakerTheme">
-        <activity android:name=".UIActivity.LayoutActivity">
+        <activity
+            android:theme="@style/SplashTheme"
+            android:name=".UIActivity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +26,8 @@
 
         <service
             android:name=".Service.SensorService"
-            android:stopWithTask="false"
-            android:enabled="true"/>
+            android:enabled="true"
+            android:stopWithTask="false" />
 
         <receiver
             android:name=".Broadcaster.SensorRestarterBroadcastReceiver"
@@ -43,7 +45,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UIActivity.HowToActivity" />
         <activity android:name=".UIActivity.AboutDevActivity" />
-        <activity android:name=".UIActivity.EditTargetActivity"></activity>
+        <activity android:name=".UIActivity.EditTargetActivity" />
+        <activity android:name=".UIActivity.LayoutActivity"></activity>
     </application>
 
 </manifest>
