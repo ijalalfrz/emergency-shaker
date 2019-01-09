@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -181,6 +182,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         temp = listTarget.get(index);
                         tvCounter.setText(String.valueOf(shakeCount+"/"+temp.jumlah_shake));
                         tvNama.setText(temp.nama);
+                        tvNama.setGravity(Gravity.CENTER);
                     }
                     foundContact = false;
                     tvShake.setText("SHAKE COUNTER");

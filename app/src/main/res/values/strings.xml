@@ -17,4 +17,9 @@
     <string name="tentang"><b>Emergency Shaker</b> merupakan aplikasi yang dapat membantumu dalam kondisi darurat.
         <br/> Perlu bantuan polisi? Ambulans? Atau kerabat terdekat? <br/> <b>Emergency Shaker</b> akan membantumu menghubungi mereka dengan lebih cepat!
     </string>
+    <string name="step1">1. Berikan izin untuk <b>Emergency Shaker</b> agar dapat mengakses lokasi serta melakukan panggilan telepon dari telepon genggam Anda.</string>
+    <string name="step3">3. Masuk ke halaman <b>Pengaturan</b> untuk menambahkan kontak yang akan dihubungi saat Anda berada dalam keadaan darurat.</string>
+    <string name="step2">2. Nyalakan <i>switch</i> pada halaman utama aplikasi untuk mengaktifkan fitur utama <b>Emergency Shaker</b>.</string>
+    <string name="step4">4. Untuk jenis kontak Polisi, Ambulans, dan Pemadam Kebakaran, <b>Emergency Shaker</b> akan menghubungi pos terdekat secara otomatis. Untuk jenis kontak Lainnya, Anda dapat menambahkan opsi kirim SMS lokasi agar <b>Emergency Shaker</b> mengirimkan serta informasi lokasi Anda.</string>
+    <string name="step5">5. Saat keadaan terasa darurat, Anda dapat melakukan <i>shake</i> pada telepon genggam Anda dan <b>Emergency Shaker</b> akan memberikan pemberitahuan bahwa kontak darurat akan segera dihubungi sesuai dengan jumlah <i>shake</i>-nya.</string>
 </resources>
