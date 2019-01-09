@@ -62,7 +62,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
-        
+
         SensorService.isActiveConfirm = true;
     }
 
@@ -127,6 +127,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                 temp = listTarget.get(index);
 
                 if(shakeCount==temp.jumlah_shake){
+                    SensorService.isBatal = false;
                     foundContact = true;
 
                     btnBatal.setVisibility(View.VISIBLE);
@@ -152,19 +153,23 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         }
 
                         public void onFinish() {
-                            if(temp.yes_sms==1 && !SensorService.isBatal){
-                                String pesan = temp.nama +", Saya dalam situasi emergensi segeralah minta bantuan. Lokasi saya : http://www.google.com/maps/place/"+LayoutActivity.lat+","+LayoutActivity.ln+" pesan ini dikirim melalui aplikasi Emergency Shaker.";
-                                sendPost(temp.telepon,pesan);
-                            }
+                            condon = 3;
+                            if(!SensorService.isBatal){
 
-                            String phoneNumber = temp.telepon;
-                            Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
-                            dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                if(temp.yes_sms==1){
+                                    String pesan = temp.nama +", Saya dalam situasi emergensi segeralah minta bantuan. Lokasi saya : http://www.google.com/maps/place/"+LayoutActivity.lat+","+LayoutActivity.ln+" pesan ini dikirim melalui aplikasi Emergency Shaker.";
+                                    sendPost(temp.telepon,pesan);
+                                }
 
-                            if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                                if(!SensorService.isBatal) ctx.startActivity(dialPhoneIntent);
-                                SensorService.isBatal = false;
-                                finish();
+                                String phoneNumber = temp.telepon;
+                                Intent dialPhoneIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+                                dialPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                                    ctx.startActivity(dialPhoneIntent);
+                                    SensorService.isBatal = false;
+                                    finish();
+                                }
                             }
                         }
 
@@ -233,6 +238,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_batal){
+            condon = 3;
             countDownTimer.cancel();
             shakeCount = 0;
             index = 0;
