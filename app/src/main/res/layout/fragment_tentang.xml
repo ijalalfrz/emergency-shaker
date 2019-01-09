@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="@dimen/margin"
         >
 
@@ -24,6 +25,7 @@
             android:background="@drawable/ic_logo"
             />
 
+
         <TextView
             android:textColor="@color/colorSecondary"
             android:textStyle="bold"
@@ -32,6 +34,13 @@
             android:layout_marginTop="30dp"
             android:text="EMERGENCY SHAKER"
             android:textSize="24sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="v1.0.0"/>
 
 
 
@@ -46,6 +55,7 @@
             android:textSize="12sp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:textAlignment="center"
           />
 
 
