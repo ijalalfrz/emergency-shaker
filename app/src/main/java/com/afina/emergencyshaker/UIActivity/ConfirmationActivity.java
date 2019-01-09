@@ -96,7 +96,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
 
 
         listTarget = new ArrayList<>();
-        listTarget = db.getAllTarget();
+        listTarget = db.getAllTargetByShake();
 
         tvCounter = (TextView) findViewById(R.id.tv_counter);
         tvNama = (TextView) findViewById(R.id.tv_nama);
