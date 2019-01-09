@@ -62,6 +62,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
+        
         SensorService.isActiveConfirm = true;
     }
 
