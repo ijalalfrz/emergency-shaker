@@ -22,4 +22,5 @@
     <string name="step2">2. Nyalakan <i>switch</i> pada halaman utama aplikasi untuk mengaktifkan fitur utama <b>Emergency Shaker</b>.</string>
     <string name="step4">4. Untuk jenis kontak Polisi, Ambulans, dan Pemadam Kebakaran, <b>Emergency Shaker</b> akan menghubungi pos terdekat secara otomatis. Untuk jenis kontak Lainnya, Anda dapat menambahkan opsi kirim SMS lokasi agar <b>Emergency Shaker</b> mengirimkan serta informasi lokasi Anda.</string>
     <string name="step5">5. Saat keadaan terasa darurat, Anda dapat melakukan <i>shake</i> pada telepon genggam Anda dan <b>Emergency Shaker</b> akan memberikan pemberitahuan bahwa kontak darurat akan segera dihubungi sesuai dengan jumlah <i>shake</i>-nya.</string>
+    <string name="about_dev">Dikembangkan oleh tiga mahasiswa Ilmu Komputer Universitas Pendidikan Indonesia (UPI) Bandung, <b>Emergency Shaker</b> ditujukan untuk membantu masyarakat yang sedang kesulitan di saat-saat darurat.</string>
 </resources>
