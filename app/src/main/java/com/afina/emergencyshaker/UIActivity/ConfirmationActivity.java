@@ -150,8 +150,8 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                         }
 
                         public void onFinish() {
-                            if(temp.yes_sms==1){
-                                String pesan = temp.nama +", Saya dalam situasi emergensi segeralah minta bantuan. Lokasi saya : http://www.google.com/maps/place/"+LayoutActivity.lat+","+LayoutActivity.ln+"";
+                            if(temp.yes_sms==1 && !SensorService.isBatal){
+                                String pesan = temp.nama +", Saya dalam situasi emergensi segeralah minta bantuan. Lokasi saya : http://www.google.com/maps/place/"+LayoutActivity.lat+","+LayoutActivity.ln+" pesan ini dikirim melalui aplikasi Emergency Shaker.";
                                 sendPost(temp.telepon,pesan);
                             }
 
