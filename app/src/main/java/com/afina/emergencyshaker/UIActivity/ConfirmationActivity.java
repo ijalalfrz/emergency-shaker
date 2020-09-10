@@ -147,7 +147,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                                 foundContact=false;
                                 isNext = true;
 
-                                this.cancel();
+                                countDownTimer.cancel();
                             }
                             condon-=1;
                         }
